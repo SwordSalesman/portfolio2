@@ -1,0 +1,85 @@
+---
+interface Props {
+	id: string;
+	title?: string;
+}
+
+const { id, title = "Window" } = Astro.props;
+---
+
+<div class='modal-backdrop' id={id} aria-hidden='true'>
+	<div class='window modal-window'>
+		<div class='title-bar'>
+			<div class='title-bar-text'>{title}</div>
+			<div class='title-bar-controls'>
+				<button class='modal-close' aria-label='Close'></button>
+			</div>
+		</div>
+		<div class='window-body'>
+			<slot />
+		</div>
+	</div>
+</div>
+
+<script>
+	// Runs once per page — handles all modals generically
+	document
+		.querySelectorAll<HTMLElement>(".modal-backdrop")
+		.forEach((modal) => {
+			modal
+				.querySelector(".modal-close")
+				?.addEventListener("click", () => {
+					modal.classList.remove("open");
+					modal.setAttribute("aria-hidden", "true");
+				});
+
+			modal.addEventListener("click", (e) => {
+				if (e.target === modal) {
+					modal.classList.remove("open");
+					modal.setAttribute("aria-hidden", "true");
+				}
+			});
+		});
+
+	document.addEventListener("keydown", (e) => {
+		if (e.key !== "Escape") return;
+		document
+			.querySelectorAll<HTMLElement>(".modal-backdrop.open")
+			.forEach((modal) => {
+				modal.classList.remove("open");
+				modal.setAttribute("aria-hidden", "true");
+			});
+	});
+</script>
+
+<style>
+	.modal-backdrop {
+		position: fixed;
+		inset: 0;
+		/* background: rgba(0, 0, 0, 0.75); */
+		z-index: 1000;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		opacity: 0;
+		pointer-events: none;
+		transition: opacity 0.15s ease;
+	}
+
+	.modal-backdrop.open {
+		opacity: 1;
+		pointer-events: all;
+	}
+
+	.modal-window {
+		max-width: 90vw;
+		max-height: 90vh;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.window-body {
+		overflow: auto;
+		padding: 12px;
+	}
+</style>

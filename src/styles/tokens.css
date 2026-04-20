@@ -1,0 +1,26 @@
+:root {
+	/* Colors */
+	--color-bg: #05050f;
+	--color-text: #f0f0f0;
+
+	--color-cyan: #00e5ff;
+	--color-pink: #ff69b4;
+	--color-lime: #39ff14;
+
+	/* Typography */
+	--font-body: Verdana, Geneva, sans-serif;
+	--font-size-base: 14px;
+
+	h1 {
+		font-size: 3rem;
+		font-family: "Comic Sans MS", cursive, sans-serif;
+		margin: 24px;
+	}
+
+	/* media size small */
+	@media (max-width: 600px) {
+		h1 {
+			font-size: 2.5rem;
+		}
+	}
+}

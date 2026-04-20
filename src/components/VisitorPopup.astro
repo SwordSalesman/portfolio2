@@ -1,0 +1,95 @@
+---
+interface Props {
+	count?: number;
+}
+const { count = 42 } = Astro.props;
+const padded = String(count).padStart(8, "0");
+---
+
+<div class='window visitor-popup'>
+	<div class='title-bar'>
+		<div class='title-bar-text'>Welcome!</div>
+		<div class='title-bar-controls'>
+			<button
+				aria-label='Minimize'
+				onclick="this.closest('.visitor-popup').querySelector('.window-body').classList.toggle('hidden')"
+			></button>
+			<button aria-label='Maximize'></button>
+			<button
+				aria-label='Close'
+				onclick="this.closest('.visitor-popup').style.display='none'"
+			></button>
+		</div>
+	</div>
+	<div class='window-body'>
+		<p>You are visitor number:</p>
+		<div class='counter'>{padded}</div>
+		<p class='thankyou'>Thanks for stopping by!!! :)</p>
+		<section class='field-row' style='justify-content: flex-end'>
+			<button
+				onclick="
+				this.closest('.window-body').querySelector('.thankyou').textContent.includes('OKAY')
+				? this.closest('.window-body').querySelector('.thankyou').textContent += ' OKAY!'
+					: this.closest('.window-body').querySelector('.thankyou').textContent = 'OKAY!'
+				"
+				>OK</button
+			>
+		</section>
+	</div>
+</div>
+
+<script>
+	import { createDraggable } from "animejs";
+	createDraggable(".visitor-popup", {
+		trigger: ".title-bar",
+		velocityMultiplier: 0,
+	});
+</script>
+
+<style>
+	.visitor-popup {
+	}
+
+	.visitor-popup:active {
+	}
+
+	.visitor-popup {
+		width: 280px;
+		color: black;
+	}
+
+	.window-body {
+		padding: 16px;
+		text-align: center;
+	}
+
+	.window-body p {
+		margin: 0 0 10px;
+		cursor: default !important;
+	}
+
+	.window-body.hidden {
+		display: none;
+	}
+
+	.counter {
+		font-family: "Courier New", Courier, monospace;
+		font-size: 28px;
+		font-weight: bold;
+		background: black;
+		color: #00ff41;
+		letter-spacing: 4px;
+		padding: 6px 12px;
+		display: inline-block;
+		border: inset 2px;
+		margin-bottom: 12px;
+	}
+
+	.thankyou {
+		/* color: #444; */
+	}
+
+	.field-row {
+		margin-top: 12px;
+	}
+</style>

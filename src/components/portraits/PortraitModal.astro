@@ -1,0 +1,41 @@
+---
+import Modal from "../Modal.astro";
+---
+
+<Modal id='portrait-modal' title='Portraits'>
+	<div class='portrait-modal-body'>
+		<img id='modal-image' src='' alt='' />
+		<div class='portrait-nav'>
+			<button id='modal-prev' class='portrait-nav-btn'
+				>&#8592; Prev</button
+			>
+			<button id='modal-next' class='portrait-nav-btn'
+				>Next &#8594;</button
+			>
+		</div>
+	</div>
+</Modal>
+
+<style>
+	.portrait-modal-body {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 12px;
+	}
+
+	#modal-image {
+		max-width: 75vw;
+		max-height: 75vh;
+		object-fit: contain;
+		display: block;
+		/* box-shadow: none; */
+	}
+
+	.portrait-nav {
+		display: flex;
+		gap: 8px;
+		justify-content: space-between;
+		width: 100%;
+	}
+</style>

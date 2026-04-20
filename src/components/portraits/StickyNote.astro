@@ -1,0 +1,29 @@
+---
+import sticky from "../../assets/bits/sticky.png";
+import Pin from "./Pin.astro";
+---
+
+<div class='sticky-note'>
+	<div class='note-content' style={`--paper-src: url(${sticky.src})`}>
+		<slot />
+	</div>
+</div>
+
+<style>
+	.sticky-note {
+		font-family: "Comic Sans MS", cursive, sans-serif;
+		position: relative;
+	}
+
+	.note-content {
+		background-image: var(--paper-src);
+		background-repeat: no-repeat;
+		background-size: contain;
+		height: 80px;
+		width: 100px;
+		padding: 10px;
+		color: #1a1a1a;
+		line-height: 1;
+		min-height: 100px;
+	}
+</style>

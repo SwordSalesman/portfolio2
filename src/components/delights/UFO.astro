@@ -1,0 +1,168 @@
+---
+import { Image } from "astro:assets";
+import ufoImg from "../../assets/bits/ufo.gif";
+import explosionImg from "../../assets/bits/explode.gif";
+import explosionSound from "../../assets/sounds/ufo-explode.mp3";
+---
+
+<div
+	class='ufo-scene'
+	id='ufo-scene'
+	data-explosion-img={explosionImg.src}
+	data-explosion-sound={explosionSound}
+>
+	<div id='ufo-inner'>
+		<Image src={ufoImg} alt='UFO' id='ufo' />
+		<img id='ufo-explosion' src='' alt='' />
+	</div>
+</div>
+
+<script>
+	import { createTimeline, animate } from "animejs";
+
+	// ── Tweak this to control how often the UFO appears (milliseconds) ──
+	const SPAWN_INTERVAL_MS = 10_000;
+
+	const scene = document.getElementById("ufo-scene") as HTMLElement;
+	const inner = document.getElementById("ufo-inner") as HTMLElement;
+	const ufo = document.getElementById("ufo") as HTMLElement;
+	const explosion = document.getElementById(
+		"ufo-explosion",
+	) as HTMLImageElement;
+
+	const explosionImgSrc = scene.dataset.explosionImg!;
+	const sound = new Audio(scene.dataset.explosionSound!);
+
+	let exploded = false;
+	let flightAnimation: ReturnType<typeof animate> | null = null;
+
+	function fly() {
+		exploded = false;
+
+		const goingRight = Math.random() > 0.5;
+		const w = 100;
+		const startX = goingRight ? -w : window.innerWidth;
+		const endX = goingRight ? window.innerWidth : -w;
+		const startY = Math.random() * window.innerHeight * 0.75;
+		const endY = Math.random() * window.innerHeight * 0.75;
+		const duration = 5000 + Math.random() * 5000;
+
+		// Flip sprite to face direction of travel
+		ufo.style.transform = goingRight ? "scaleX(1)" : "scaleX(-1)";
+
+		inner.style.left = `${startX}px`;
+		inner.style.top = `${startY}px`;
+		inner.style.display = "block";
+		ufo.style.opacity = "1";
+		explosion.src = ""; // Clear explosion image
+
+		flightAnimation = animate(inner, {
+			left: endX,
+			top: endY,
+			duration,
+			easing: "ease",
+			onComplete: scheduleNext,
+		});
+	}
+
+	function scheduleNext() {
+		const interval = exploded ? SPAWN_INTERVAL_MS * 2 : SPAWN_INTERVAL_MS;
+		const jitter = (Math.random() - 0.5) * interval * 0.8;
+		setTimeout(fly, interval + jitter);
+	}
+
+	// First appearance after a short delay
+	scheduleNext();
+
+	// Handle the explosion
+	ufo.addEventListener("click", () => {
+		if (exploded) return;
+		exploded = true;
+		flightAnimation?.pause();
+
+		// Re-set src to restart the GIF from frame 1
+		explosion.src = explosionImgSrc;
+
+		createTimeline()
+			// Two quick white flashes
+			.call(() => ufo.classList.add("flash"))
+			// Play sound at the same time as the flashes
+			.call(() => sound.play().catch(() => {}), "<")
+			// Explosion appears + UFO fades out, starting halfway through the flashes
+			.add(
+				explosion,
+				{ opacity: [0, 1], duration: 100, easing: "linear" },
+				"<+=450",
+			)
+			.call(() => ufo.classList.remove("flash"), "<")
+			.add(
+				ufo,
+				{
+					opacity: [1, 0],
+					duration: 200,
+					easing: "easeOutQuad",
+				},
+				"<+=250",
+			)
+			// Clean up once done
+			.call(() => {
+				inner.style.display = "none";
+			}, "<+=1800")
+			.call(() => {
+				scheduleNext();
+			});
+	});
+</script>
+
+<style>
+	.ufo-scene {
+		position: fixed;
+		inset: 0;
+		pointer-events: none;
+		z-index: 999;
+	}
+
+	#ufo-inner {
+		position: absolute;
+		pointer-events: all;
+		width: fit-content;
+		user-select: none;
+		left: -100px;
+		top: -100px;
+		display: none;
+	}
+
+	.flash {
+		animation: flashAnim 300ms ease-out infinite;
+	}
+
+	@keyframes flashAnim {
+		0%,
+		49%,
+		100% {
+			filter: brightness(100);
+		}
+		50%,
+		99% {
+			filter: brightness(1);
+		}
+	}
+
+	#ufo {
+		display: block;
+		width: 80px;
+		height: auto;
+		cursor: pointer;
+	}
+
+	#ufo-explosion {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 120px;
+		height: auto;
+		opacity: 0;
+		pointer-events: none;
+	}
+</style>

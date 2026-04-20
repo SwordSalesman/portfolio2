@@ -1,0 +1,189 @@
+---
+import Image from "astro/components/Image.astro";
+import lake from "../assets/bits/lake.webp";
+import duck from "../assets/bits/duck.gif";
+import brick from "../assets/textures/brick2.jpg";
+import scoop from "../assets/bits/construction/vehicle.gif";
+import spinning from "../assets/bits/construction/spinning.gif";
+import titleBar from "../assets/bits/construction/bar.png";
+import quack from "../assets/sounds/quickquack.mp3";
+import cautionBar from "../assets/bits/construction/caution-bar.png";
+---
+
+<section class='more-to-come'>
+	<!-- <div class='title'>
+		<h3>UNDER CONSTRUCTION</h3>
+		<p>
+			This section is currently under construction. Please check back
+			later for updates.
+		</p>
+	</div> -->
+	<Image src={titleBar} alt='Under Construction' class='under-construction' />
+	<p class='construction-message'>
+		New projects are coming. Check back every 2 to 3 minutes for updates.
+	</p>
+	<div class='scene-container'>
+		<div class='brick-left' style=`background-image: url(${brick.src});`>
+		</div>
+		<div class='brick-right' style=`background-image: url(${brick.src});`>
+		</div>
+		<div class='caution-bar-container' style='top: 50px'>
+			<div
+				class='caution-bar'
+				style=`background-image: url(${cautionBar.src});`
+			>
+			</div>
+		</div>
+		<Image src={lake} alt='Lake scene' class='lake' />
+		<Image src={duck} alt='Duck' class='duck' />
+		<div class='caution-bar-container' style='top: 260px'>
+			<div
+				class='caution-bar'
+				style=`background-image: url(${cautionBar.src});`
+			>
+			</div>
+		</div>
+		<Image src={scoop} alt='Scoop' class='scoop' />
+		<Image src={spinning} alt='Spinning' class='spinning' />
+	</div>
+</section>
+
+<script define:vars={{ quack }}>
+	const quackSound = new Audio(quack);
+	const duck = document.querySelector(".duck");
+
+	duck?.addEventListener("click", () => {
+		quackSound.play();
+	});
+</script>
+
+<style>
+	.more-to-come {
+		width: 100%;
+		max-width: 500px;
+		/* margin: 0 0 100px 0; */
+	}
+
+	.construction-message {
+		margin: 0;
+		font-family: monospace;
+		background: rgb(39, 44, 50);
+
+		@media (max-width: 600px) {
+			padding: 0 16px;
+		}
+	}
+
+	.scene-container {
+		position: relative;
+		top: -20px;
+		height: 300px;
+	}
+
+	.under-construction {
+		width: 100%;
+		height: auto;
+	}
+
+	.scoop {
+		width: 230px;
+		height: auto;
+		position: absolute;
+		left: 15%;
+		transform: translateX(-50%);
+		top: 150px;
+
+		@media (max-width: 600px) {
+			display: none;
+		}
+	}
+
+	.spinning {
+		width: 130px;
+		height: auto;
+		position: absolute;
+		right: 0;
+		top: 40px;
+
+		@media (max-width: 600px) {
+			display: none;
+		}
+	}
+
+	.brick-left,
+	.brick-right {
+		height: 225px;
+		width: 70px;
+		background-size: cover;
+		position: absolute;
+		left: 0px;
+		top: 55px;
+
+		@media (max-width: 600px) {
+			width: 20px;
+		}
+	}
+
+	.brick-right {
+		left: auto;
+		right: 0px;
+	}
+
+	.caution-bar-container {
+		width: 100%;
+		height: 16px;
+		position: relative;
+	}
+
+	.caution-bar {
+		height: 100%;
+		animation: scroll 3s linear infinite;
+	}
+
+	@keyframes scroll {
+		0% {
+			background-position: 0 0;
+		}
+		100% {
+			background-position: 140px 0;
+		}
+	}
+
+	.lake {
+		width: 360px;
+		height: 260px;
+		object-fit: cover;
+		object-position: bottom;
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+
+	.duck {
+		width: 120px;
+		height: auto;
+		position: absolute;
+		left: 40%;
+		top: 200px;
+		animation: swim 10s infinite;
+		cursor: pointer;
+	}
+
+	@keyframes swim {
+		0% {
+			transform: translateX(0px) scaleX(1);
+		}
+		45% {
+			transform: translateX(90px) scaleX(1);
+		}
+		50% {
+			transform: translateX(100px) scaleX(-1);
+		}
+		95% {
+			transform: translateX(10px) scaleX(-1);
+		}
+		100% {
+			transform: translateX(0px) scaleX(1);
+		}
+	}
+</style>

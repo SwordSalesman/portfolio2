@@ -1,0 +1,288 @@
+---
+import { Image } from "astro:assets";
+import PortraitPin from "./PortraitPin.astro";
+import TornPaperNote from "./TornPaperNote.astro";
+import PortraitModal from "./PortraitModal.astro";
+
+import portrait1 from "../../assets/portraits/portrait-1.jpg";
+import portrait2 from "../../assets/portraits/portrait-2.jpg";
+import portrait3 from "../../assets/portraits/portrait-3.jpg";
+import portrait4 from "../../assets/portraits/portrait-4.jpg";
+import magnifyingGlass from "../../assets/bits/magnifying-glass.png";
+import corkTexture from "../../assets/textures/cork.jpg";
+import StickyNote from "./StickyNote.astro";
+import type { ImageMetadata } from "astro";
+
+const portraitData = [
+	{ src: portrait1, id: "portrait-pin-1", alt: "Portrait 1" },
+	{ src: portrait2, id: "portrait-pin-2", alt: "Portrait 2" },
+	{ src: portrait3, id: "portrait-pin-3", alt: "Portrait 3" },
+	{ src: portrait4, id: "portrait-pin-4", alt: "Portrait 4" },
+];
+---
+
+<section
+	id='corkboard'
+	style={`background-image: url(${corkTexture.src})`}
+	data-portrait-srcs={JSON.stringify(portraitData)}
+>
+	<div class='draggable' id='intro-note'>
+		<TornPaperNote>
+			<h2>Portraits</h2>
+			<p>
+				A collection of digital character portraits I've painted. All
+				commissioned in-character.
+			</p>
+		</TornPaperNote>
+	</div>
+
+	<div class='draggable' id='sticky-2'>
+		<StickyNote>
+			<p>Reminder: get milk</p>
+		</StickyNote>
+	</div>
+
+	{
+		portraitData.map((portrait) => (
+			<div class='draggable' id={portrait.id}>
+				<PortraitPin image={portrait.src} alt={portrait.alt} />
+			</div>
+		))
+	}
+
+	<div class='draggable' id='sticky-0'>
+		<StickyNote>
+			<p>To do: more portraits</p>
+		</StickyNote>
+	</div>
+
+	<div class='draggable' id='sticky-1'>
+		<StickyNote>
+			<p>Click around!</p>
+		</StickyNote>
+	</div>
+
+	<div
+		class='magnifying-glass'
+		id='magnifying-glass'
+		title='Click to view portraits'
+	>
+		<Image src={magnifyingGlass} alt='Magnifying glass' width={84} />
+	</div>
+</section>
+
+<PortraitModal />
+
+<script>
+	import { createDraggable, animate } from "animejs";
+	import { openModal } from "../../utils/modal";
+
+	const board = document.getElementById("corkboard") as HTMLElement;
+	const portraitData = JSON.parse(board.dataset.portraitSrcs!) as {
+		src: { src: string };
+		id: string;
+		alt: string;
+	}[];
+	const portraitSrcs = portraitData.map((p) => p.src.src);
+	const modalImage = document.getElementById(
+		"modal-image",
+	) as HTMLImageElement;
+
+	let currentIndex = 0;
+	let didDrag = false;
+
+	function showImage(index: number) {
+		currentIndex = index;
+		modalImage.src = portraitSrcs[currentIndex];
+	}
+
+	function showNext() {
+		showImage((currentIndex + 1) % portraitSrcs.length);
+	}
+
+	function showPrev() {
+		showImage(
+			(currentIndex - 1 + portraitSrcs.length) % portraitSrcs.length,
+		);
+	}
+
+	// Draggable setup
+	document.querySelectorAll(".draggable").forEach((el) => {
+		const htmlEl = el as HTMLElement;
+		createDraggable(htmlEl, {
+			container: board,
+			velocityMultiplier: 0,
+			onGrab: () => {
+				didDrag = false;
+				el.classList.add("dragging");
+				animate(htmlEl, {
+					scale: 1.05,
+					duration: 200,
+					easing: "easeOutQuad",
+				});
+			},
+			onDrag: () => {
+				didDrag = true;
+			},
+			onRelease: () => {
+				el.classList.remove("dragging");
+				animate(htmlEl, {
+					scale: 1,
+					duration: 200,
+					easing: "easeOutQuad",
+				});
+			},
+		});
+	});
+
+	// Click portrait pins to open modal
+	portraitData.forEach((portrait, index) => {
+		document.getElementById(portrait.id)!.addEventListener("click", () => {
+			if (didDrag) {
+				didDrag = false;
+				return;
+			}
+			showImage(index);
+			openModal("portrait-modal");
+		});
+	});
+
+	document
+		.getElementById("magnifying-glass")!
+		.addEventListener("click", () => {
+			showImage(0);
+			openModal("portrait-modal");
+		});
+
+	document.getElementById("modal-next")!.addEventListener("click", showNext);
+	document.getElementById("modal-prev")!.addEventListener("click", showPrev);
+
+	document.addEventListener("keydown", (e) => {
+		if (
+			!document
+				.getElementById("portrait-modal")
+				?.classList.contains("open")
+		)
+			return;
+		if (e.key === "ArrowRight") showNext();
+		if (e.key === "ArrowLeft") showPrev();
+	});
+</script>
+
+<style>
+	#corkboard {
+		position: relative;
+		/* max-width: 800px; */
+		width: 100%;
+		min-height: 540px;
+
+		background-size: 400px 400px;
+
+		box-shadow: inset 0px 0px 20px 10px rgb(167 118 66);
+		border-radius: 10px;
+
+		@media (max-width: 600px) {
+			height: 780px;
+		}
+	}
+
+	.draggable {
+		position: absolute;
+		/* transition: transform 0.2s ease; */
+		transition: filter 0.2s ease;
+		filter: drop-shadow(3px 5px 6px rgba(0, 0, 0, 0.2));
+	}
+
+	.draggable.dragging {
+		filter: drop-shadow(5px 12px 12px rgba(0, 0, 0, 0.5));
+	}
+
+	#intro-note {
+		left: 10px;
+		top: 10px;
+	}
+
+	#sticky-0 {
+		right: 40px;
+		bottom: 40px;
+		rotate: -5deg;
+
+		@media (max-width: 600px) {
+			right: 20px;
+			bottom: 20px;
+		}
+	}
+
+	#sticky-1 {
+		left: 30px;
+		top: 170px;
+		rotate: 8deg;
+	}
+
+	#sticky-2 {
+		left: 360px;
+		top: 100px;
+		rotate: 2deg;
+	}
+
+	#portrait-pin-1 {
+		left: 320px;
+		top: 30px;
+		rotate: -3deg;
+
+		@media (max-width: 600px) {
+			top: 150px;
+		}
+	}
+
+	#portrait-pin-2 {
+		right: 10px;
+		top: 60px;
+		rotate: 2deg;
+
+		@media (max-width: 600px) {
+			right: 50px;
+			top: 380px;
+		}
+	}
+
+	#portrait-pin-3 {
+		left: 350px;
+		bottom: 10px;
+		rotate: -1deg;
+
+		@media (max-width: 600px) {
+			left: 30px;
+		}
+	}
+
+	#portrait-pin-4 {
+		left: 90px;
+		top: 240px;
+		rotate: 3deg;
+
+		@media (max-width: 600px) {
+			left: 15px;
+			top: 330px;
+		}
+	}
+
+	.magnifying-glass {
+		position: absolute;
+		bottom: -20px;
+		right: 0px;
+		cursor: pointer;
+		filter: drop-shadow(0px 0px 8px rgb(255, 255, 255));
+		transition: transform 0.15s ease;
+		transform: rotate(20deg);
+		z-index: 100;
+	}
+
+	.magnifying-glass:hover {
+		transform: scale(1.1) rotate(20deg);
+	}
+
+	.magnifying-glass img {
+		display: block;
+	}
+</style>
