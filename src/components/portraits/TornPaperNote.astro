@@ -1,0 +1,37 @@
+---
+import tornPaper from "../../assets/bits/torn-paper.png";
+import Pin from "./Pin.astro";
+---
+
+<div class='torn-paper-note'>
+	<Pin />
+	<div class='note-content' style={`--paper-src: url(${tornPaper.src})`}>
+		<slot />
+	</div>
+</div>
+
+<style>
+	.torn-paper-note {
+		width: 300px;
+		font-family: monospace, monospace;
+		position: relative;
+	}
+
+	.note-content {
+		background-image: var(--paper-src);
+		background-size: cover;
+		background-position: center;
+		padding: 24px 20px 32px;
+		color: #1a1a1a;
+		font-size: 13px;
+		line-height: 1.5;
+		min-height: 100px;
+	}
+
+	.note-content :global(h2) {
+		font-size: 18px;
+	}
+
+	.note-content :global(p) {
+	}
+</style>

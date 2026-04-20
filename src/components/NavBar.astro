@@ -1,0 +1,61 @@
+---
+import "98.css";
+import "../styles/tokens.css";
+
+interface Props {
+	title?: string;
+}
+const { title } = Astro.props;
+---
+
+<nav>
+	<div class='nav-inner'>
+		<a class={!title ? "nav-active" : ""} href='/'>Home</a>
+		<a class={title === "projects" ? "nav-active" : ""} href='/projects'
+			>Projects</a
+		>
+		<a class={title === "career" ? "nav-active" : ""} href='/career'
+			>Career</a
+		>
+		<a class={title === "guestbook" ? "nav-active" : ""} href='/guestbook'
+			>Guestbook</a
+		>
+		<a class={title === "contact" ? "nav-active" : ""} href='/contact'
+			>Contact the Webmaster</a
+		>
+	</div>
+</nav>
+
+<style>
+	nav {
+		/* background-color: #000018; */
+		/* border-bottom: 1px solid #222244; */
+	}
+
+	.nav-inner {
+		max-width: 960px;
+		margin: 0 auto;
+		padding: 16px 16px;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 12px;
+		align-items: center;
+		justify-content: center;
+	}
+
+	nav a {
+		color: var(--color-cyan);
+		text-decoration: none;
+		/* font-size: 18px; */
+	}
+
+	nav a:hover {
+		color: var(--color-pink);
+		text-decoration: underline;
+	}
+
+	nav .nav-active {
+		color: var(--color-pink);
+		text-decoration: underline;
+	}
+</style>

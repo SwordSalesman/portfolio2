@@ -1,0 +1,39 @@
+---
+import Layout from "../layouts/Layout.astro";
+import VisitorPopup from "../components/VisitorPopup.astro";
+import NavBar from "../components/NavBar.astro";
+---
+
+<Layout>
+	<div class='container'>
+		<NavBar />
+		<div class='content'>
+			<h1>Welcome to Luke Cannon's Website!!!</h1>
+			<p class='subheading'>
+				Click around and have a look! There's something for everyone
+				here
+			</p>
+			<div></div>
+			<VisitorPopup count={42} />
+		</div>
+	</div>
+</Layout>
+
+<style>
+	.container {
+		text-align: center;
+	}
+
+	.content {
+		padding: 24px;
+	}
+
+	.content h1 {
+	}
+
+	.subheading {
+		font-size: 1.25rem;
+		color: var(--color-lime);
+		font-style: italic;
+	}
+</style>
