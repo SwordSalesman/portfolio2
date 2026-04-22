@@ -32,6 +32,7 @@ import explosionSound from "../../assets/sounds/ufo-explode.mp3";
 
 	const explosionImgSrc = scene.dataset.explosionImg!;
 	const sound = new Audio(scene.dataset.explosionSound!);
+	sound.volume = 0.6;
 
 	let exploded = false;
 	let flightAnimation: ReturnType<typeof animate> | null = null;

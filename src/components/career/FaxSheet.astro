@@ -1,0 +1,343 @@
+---
+import coffeeStain from "../../assets/bits/coffee-stain.png";
+import artifact from "../../assets/textures/paper.png";
+---
+
+<div class='fax-wrapper'>
+	<div class='fax-sheet'>
+		<img
+			src={coffeeStain.src}
+			alt=''
+			class='coffee-stain'
+			aria-hidden='true'
+		/>
+
+		<div
+			class='photocopy-artifact'
+			aria-hidden='true'
+			style={`background-image: url(${artifact.src})`}
+		>
+		</div>
+
+		<div class='fax-header'>
+			<span>FROM: HR DEPARTMENT</span>
+			<span>TO: WHOM IT MAY CONCERN</span>
+			<span>PAGES: 1 OF █</span>
+			<span>DATE: ██/██/████</span>
+		</div>
+
+		<div class='fax-divider'>
+			════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+		</div>
+
+		<h1 class='fax-title'>EMPLOYEE RECORD — CONFIDENTIAL</h1>
+
+		<div class='fax-divider'>
+			════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+		</div>
+
+		<div class='fax-section'>
+			<div class='fax-row'>
+				<span class='fax-label'>NAME:</span>
+				<span class='fax-value'>Cannon, Luke.</span>
+			</div>
+			<div class='fax-row'>
+				<span class='fax-label'>EMPLOYEE NO.:</span>
+				<span class='fax-value'>1009248821001</span>
+			</div>
+			<div class='fax-row'>
+				<span class='fax-label'>DEPARTMENT:</span>
+				<span class='fax-value'>Software Engineering</span>
+			</div>
+			<div class='fax-row'>
+				<span class='fax-label'>STATUS:</span>
+				<span class='fax-value'>Employed</span>
+			</div>
+			<div class='fax-row'>
+				<span class='fax-label'>PROFITABILITY:</span>
+				<span class='fax-value'>AT OR ABOVE EXPECTATIONS</span>
+			</div>
+		</div>
+
+		<div class='fax-divider'>
+			────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+		</div>
+
+		<div class='fax-section'>
+			<p class='fax-section-title'>▌EMPLOYMENT HISTORY</p>
+
+			<div class='fax-entry'>
+				<div class='fax-row'>
+					<span class='fax-label'>POSITION:</span>
+					<span class='fax-value'>Software Engineer</span>
+				</div>
+				<div class='fax-row'>
+					<span class='fax-label'>EMPLOYER:</span>
+					<span class='fax-value'>Seven West Media</span>
+				</div>
+				<div class='fax-row'>
+					<span class='fax-label'>DATES:</span>
+					<span class='fax-value'>05/2023 - Present</span>
+				</div>
+				<div class='fax-row'>
+					<span class='fax-label'>DUTIES:</span>
+					<span class='fax-value'
+						>Community sports platform 'Streamer' development.
+						Tipping platform 'The Game' app and web development.</span
+					>
+				</div>
+				<div class='fax-row'>
+					<span class='fax-label'>REASON FOR LEAVING:</span>
+					<span class='fax-value'>N/A</span>
+				</div>
+			</div>
+
+			<div class='fax-entry-divider'>
+				- - - - - - - - - - - - - - - - - - - - -
+			</div>
+
+			<div class='fax-entry'>
+				<div class='fax-row'>
+					<span class='fax-label'>POSITION:</span>
+					<span class='fax-value'>Junior Developer</span>
+				</div>
+				<div class='fax-row'>
+					<span class='fax-label'>EMPLOYER:</span>
+					<span class='fax-value'>Powerledger</span>
+				</div>
+				<div class='fax-row'>
+					<span class='fax-label'>DATES:</span>
+					<span class='fax-value'>01/2023 - 04/2023</span>
+				</div>
+				<div class='fax-row'>
+					<span class='fax-label'>REASON FOR LEAVING:</span>
+					<span class='fax-value'
+						>See UN Human Rights Declaration 2004, Article 7(b).</span
+					>
+				</div>
+			</div>
+
+			<div class='fax-entry-divider'>
+				- - - - - - - - - - - - - - - - - - - - -
+			</div>
+
+			<div class='fax-entry'>
+				<div class='fax-row'>
+					<span class='fax-label'>POSITION:</span>
+					<span class='fax-value'>Control Systems Engineer</span>
+				</div>
+				<div class='fax-row'>
+					<span class='fax-label'>EMPLOYER:</span>
+					<span class='fax-value'>Electro80</span>
+				</div>
+				<div class='fax-row'>
+					<span class='fax-label'>DATES:</span>
+					<span class='fax-value'>11/2020 - 01/2023</span>
+				</div>
+				<div class='fax-row'>
+					<span class='fax-label'>REASON FOR LEAVING:</span>
+					<span class='fax-value'
+						>Exit interview cites: "No standing desks"</span
+					>
+				</div>
+			</div>
+		</div>
+
+		<div class='fax-divider'>
+			────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+		</div>
+
+		<div class='fax-section'>
+			<p class='fax-section-title'>▌ADDITIONAL NOTES</p>
+			<div class='fax-section-notes'>
+				<p class='fax-note'>
+					[X] Corporate Compliance Training completed
+				</p>
+				<p class='fax-note'>[X] Drug test completed. Result [A+]</p>
+				<p class='fax-note'>
+					[ ] Witnessed horrors beyond comprehension
+				</p>
+				<p class='fax-note'>[X] Tax forms submitted</p>
+			</div>
+		</div>
+
+		<div class='fax-divider'>
+			════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+		</div>
+
+		<div class='fax-footer'>
+			<span>END OF DOCUMENT</span>
+			<span class='ink-warning'
+				>⚠ PRINTER INK LOW. PLEASE REPLACE CARTRIDGE.</span
+			>
+		</div>
+	</div>
+</div>
+
+<style>
+	.fax-wrapper {
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		padding: 10px 0 60px;
+	}
+
+	.coffee-stain {
+		position: absolute;
+		bottom: 60px;
+		left: -50px;
+		width: 240px;
+		opacity: 0.3;
+		pointer-events: none;
+		mix-blend-mode: multiply;
+	}
+
+	.photocopy-artifact {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		mix-blend-mode: multiply;
+		background-size: cover;
+		background-position: bottom;
+		background-repeat: no-repeat;
+		opacity: 0.4;
+		pointer-events: none;
+	}
+
+	.fax-sheet {
+		position: relative;
+		background: #f5f0e8;
+		color: #1a1a1a;
+		font-family: "Courier New", Courier, monospace;
+		font-size: 13px;
+		line-height: 1.6;
+		padding: 40px 48px;
+		width: 100%;
+		max-width: 640px;
+		box-shadow:
+			4px 4px 0 #aaa,
+			8px 8px 0 #ccc;
+
+		/* Subtle scan lines for that fax texture */
+		background-image: repeating-linear-gradient(
+			0deg,
+			transparent,
+			transparent 2px,
+			rgba(0, 0, 0, 0.015) 2px,
+			rgba(0, 0, 0, 0.015) 4px
+		);
+	}
+
+	.fax-header {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		gap: 4px 16px;
+		font-size: 11px;
+		color: #555;
+		margin-bottom: 8px;
+	}
+
+	.fax-title {
+		font-family: "Courier New", Courier, monospace;
+		font-size: 15px;
+		font-weight: bold;
+		letter-spacing: 0.1em;
+		text-align: center;
+		margin: 8px 0;
+	}
+
+	.fax-divider {
+		color: #999;
+		font-size: 11px;
+		overflow: hidden;
+		white-space: nowrap;
+		margin: 4px 0;
+	}
+
+	.fax-section {
+		padding: 12px 0;
+	}
+
+	.fax-section-title {
+		font-weight: bold;
+		font-size: 12px;
+		letter-spacing: 0.08em;
+		margin: 0 0 10px;
+	}
+
+	.fax-section-notes {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+
+		@media (max-width: 540px) {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	.fax-row {
+		display: grid;
+		grid-template-columns: 180px 1fr;
+		gap: 8px;
+		margin-bottom: 3px;
+	}
+
+	.fax-label {
+		font-weight: bold;
+		font-size: 11px;
+		letter-spacing: 0.05em;
+		color: #333;
+		white-space: nowrap;
+	}
+
+	.fax-value {
+		color: #1a1a1a;
+	}
+
+	.fax-entry {
+		padding: 4px 0;
+	}
+
+	.fax-entry-divider {
+		color: #bbb;
+		font-size: 11px;
+		margin: 8px 0;
+		letter-spacing: 0.1em;
+	}
+
+	.fax-note {
+		font-size: 12px;
+		color: #444;
+		margin: 2px 0;
+	}
+
+	.fax-footer {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 8px;
+		font-size: 11px;
+		color: #777;
+		margin-top: 8px;
+	}
+
+	.ink-warning {
+		font-size: 10px;
+		color: #bbb;
+		font-style: italic;
+	}
+
+	@media (max-width: 540px) {
+		.fax-sheet {
+			padding: 24px 20px;
+			font-size: 11px;
+		}
+
+		.fax-row {
+			grid-template-columns: 140px 1fr;
+		}
+	}
+</style>

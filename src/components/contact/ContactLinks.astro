@@ -1,0 +1,198 @@
+---
+import handshake1 from "../../assets/bits/shake1.gif";
+import handshake2 from "../../assets/bits/shake2.gif";
+import ComputerTypingGraphic from "./ComputerTypingGraphic.astro";
+---
+
+<section class='contact-links'>
+	<div class='computer-typing'>
+		<ComputerTypingGraphic />
+	</div>
+	<div class='window'>
+		<div class='title-bar'>
+			<div class='title-bar-text'>Get In Touch!!!</div>
+		</div>
+		<div class='window-body links-body'>
+			<p class='prompt-text'>
+				Want to hire me?? Or just say hi?? Here's how to reach me on the
+				information superhighway!!
+			</p>
+			<div class='links-grid'>
+				<a href='mailto:lukewzcannon@gmail.com' class='link-item'>
+					<span class='link-icon' aria-hidden='true'>📧</span>
+					<div class='link-label'>
+						<span class='link-title'>Email</span>
+						<span class='link-sub'>lukewzcannon@gmail.com</span>
+					</div>
+				</a>
+
+				<a
+					href='https://www.linkedin.com/in/luke-cannon-28a113168'
+					target='_blank'
+					rel='noopener'
+					class='link-item'
+				>
+					<span class='link-icon' aria-hidden='true'>💼</span>
+					<div class='link-label'>
+						<span class='link-title'>LinkedIn</span>
+						<span class='link-sub'
+							>linkedin.com/in/luke-cannon-28a113168</span
+						>
+					</div>
+				</a>
+
+				<a
+					href='/LukeCannonResume.pdf'
+					target='_blank'
+					class='link-item'
+				>
+					<span class='link-icon' aria-hidden='true'>📄</span>
+					<div class='link-label'>
+						<span class='link-title'>Resume</span>
+						<span class='link-sub'>Download my CV (PDF)</span>
+					</div>
+				</a>
+
+				<a
+					href='https://github.com/swordsalesman'
+					target='_blank'
+					rel='noopener'
+					class='link-item'
+				>
+					<span class='link-icon' aria-hidden='true'>🐙</span>
+					<div class='link-label'>
+						<span class='link-title'>GitHub</span>
+						<span class='link-sub'>github.com/swordsalesman</span>
+					</div>
+				</a>
+			</div>
+		</div>
+	</div>
+	<div class='shake-container'>
+		<div class='shake1' style={`background-image: url(${handshake1.src});`}>
+		</div>
+		<div class='shake2' style={`background-image: url(${handshake2.src});`}>
+		</div>
+	</div>
+</section>
+
+<style>
+	.contact-links {
+		width: 100%;
+		position: relative;
+	}
+
+	.computer-typing {
+		width: fit-content;
+		margin: 0 auto;
+		margin-bottom: 20px;
+	}
+
+	.links-body {
+		padding: 8px;
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
+	}
+
+	.prompt-text {
+		margin: 0;
+		font-family: var(--font-body);
+		font-size: 13px;
+		color: #000;
+	}
+
+	.links-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 8px;
+
+		@media (max-width: 540px) {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	.link-item {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		padding: 8px 10px;
+		text-decoration: none;
+		color: #000;
+		border: 2px solid transparent;
+
+		/* 98.css raised button surface */
+		background: #d4d0c8;
+		box-shadow:
+			inset -1px -1px #0a0a0a,
+			inset 1px 1px #fff,
+			inset -2px -2px grey,
+			inset 2px 2px #dfdfdf;
+	}
+
+	.link-item:hover {
+		box-shadow:
+			inset -1px -1px #fff,
+			inset 1px 1px #0a0a0a,
+			inset -2px -2px #dfdfdf,
+			inset 2px 2px grey;
+	}
+
+	.link-item:hover .link-title {
+		text-decoration: underline;
+	}
+
+	.link-icon {
+		width: 32px;
+		height: 32px;
+		font-size: 24px;
+		line-height: 32px;
+		text-align: center;
+		image-rendering: pixelated;
+		flex-shrink: 0;
+	}
+
+	.link-label {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		overflow: hidden;
+	}
+
+	.link-title {
+		font-family: var(--font-body);
+		font-size: 13px;
+		font-weight: bold;
+		color: #000;
+		white-space: nowrap;
+	}
+
+	.link-sub {
+		font-family: var(--font-body);
+		font-size: 11px;
+		color: #444;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.shake-container {
+		position: relative;
+		top: -10px;
+		display: flex;
+		justify-content: space-between;
+		gap: 8px;
+	}
+
+	.shake1 {
+		height: 120px;
+		width: 78px;
+	}
+
+	.shake2 {
+		height: 114px;
+		width: 113px;
+		background-size: 116px;
+		background-position: bottom;
+	}
+</style>

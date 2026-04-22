@@ -1,4 +1,7 @@
 :root {
+	/* Layout */
+	--max-width-page: 960px;
+
 	/* Colors */
 	--color-bg: #05050f;
 	--color-text: #f0f0f0;
@@ -22,5 +25,27 @@
 		h1 {
 			font-size: 2.5rem;
 		}
+	}
+
+	@font-face {
+		font-family: "Comic Sans MS";
+		src: url("../assets/fonts/ComicSansMS.ttf") format("truetype");
+		font-weight: normal;
+		font-style: normal;
+	}
+
+	@font-face {
+		font-family: "Comic Sans MS";
+		src: url("../assets/fonts/ComicSansMSBold.ttf") format("truetype");
+		font-weight: bold;
+		font-style: normal;
+	}
+
+	.window-body {
+		color: black;
+	}
+
+	a {
+		color: var(--color-cyan);
 	}
 }

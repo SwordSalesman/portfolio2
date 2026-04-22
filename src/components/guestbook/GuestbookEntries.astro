@@ -1,0 +1,178 @@
+---
+interface Props {
+	entryLimit?: number;
+}
+const { entryLimit }: Props = Astro.props;
+---
+
+<div class='gb-form-container'>
+	<div class='window'>
+		<div class='title-bar'>
+			<div class='title-bar-text'>Entries</div>
+		</div>
+		<div class='window-body entries-body'>
+			<div id='gb-entries-list' data-entry-limit={entryLimit}>
+				<p class='gb-loading'>Loading entries...</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	import { db } from "../../utils/firebase";
+	import {
+		collection,
+		getDocs,
+		orderBy,
+		query,
+		limit,
+	} from "firebase/firestore";
+
+	const list = document.getElementById("gb-entries-list") as HTMLElement;
+	const entryLimit = list.dataset.entryLimit
+		? parseInt(list.dataset.entryLimit)
+		: undefined;
+
+	function formatDate(date: Date): string {
+		return date.toLocaleDateString("en-AU", {
+			day: "numeric",
+			month: "short",
+			year: "numeric",
+		});
+	}
+
+	function createEntryEl(
+		id: string,
+		name: string,
+		message: string,
+		date: Date,
+	): HTMLElement {
+		const entry = document.createElement("div");
+		entry.className = "gb-entry";
+		entry.dataset.id = id;
+
+		const header = document.createElement("div");
+		header.className = "gb-entry-header";
+
+		const nameEl = document.createElement("span");
+		nameEl.className = "gb-name";
+		nameEl.textContent = name;
+
+		const dateEl = document.createElement("span");
+		dateEl.className = "gb-date";
+		dateEl.textContent = formatDate(date);
+
+		const messageEl = document.createElement("p");
+		messageEl.className = "gb-message";
+		messageEl.textContent = message;
+
+		header.append(nameEl, dateEl);
+		entry.append(header, messageEl);
+		return entry;
+	}
+
+	try {
+		const q = query(
+			collection(db, "guestbook"),
+			orderBy("timestamp", "desc"),
+			limit(entryLimit ?? 100),
+		);
+		const snapshot = await getDocs(q);
+
+		if (snapshot.empty) {
+			const empty = document.createElement("p");
+			empty.className = "gb-empty";
+			empty.textContent = "No entries yet. Be the first!";
+			list.append(empty);
+		} else {
+			const fragment = document.createDocumentFragment();
+			snapshot.docs.forEach((doc) => {
+				const d = doc.data();
+				const date = d.timestamp?.toDate?.() ?? new Date();
+				fragment.append(createEntryEl(doc.id, d.name, d.message, date));
+			});
+			list.innerHTML = "";
+			list.append(fragment);
+		}
+	} catch (err) {
+		console.error(err);
+		const errEl = document.createElement("p");
+		errEl.className = "gb-empty";
+		errEl.textContent = "Failed to load entries.";
+		list.append(errEl);
+	}
+
+	// Listen for optimistic new entries from the form
+	document.addEventListener("guestbook:new-entry", (e: Event) => {
+		const { id, name, message, timestamp } = (e as CustomEvent).detail;
+		const entryEl = createEntryEl(id, name, message, timestamp);
+
+		// Remove "no entries" message if present
+		const empty = list.querySelector(".gb-empty");
+		if (empty) empty.remove();
+
+		list.prepend(entryEl);
+	});
+</script>
+
+<style>
+	.gb-form-container {
+		width: 100%;
+	}
+
+	.window {
+	}
+
+	.entries-body {
+		padding: 12px;
+		display: flex;
+		flex-direction: column;
+		gap: 0;
+		max-height: 480px;
+		overflow-y: auto;
+	}
+
+	#gb-entries-list {
+	}
+
+	.gb-loading,
+	.gb-empty {
+		font-size: 12px;
+		color: #666;
+		margin: 0;
+		padding: 8px 0;
+	}
+
+	:global(.gb-entry) {
+		padding: 14px 0;
+		border-bottom: 1px solid #7c7c7c;
+	}
+
+	:global(.gb-entry:last-child) {
+		border-bottom: none;
+	}
+
+	:global(.gb-entry-header) {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		margin-bottom: 4px;
+	}
+
+	:global(.gb-name) {
+		font-weight: bold;
+		/* font-size: 13px; */
+		color: #000;
+	}
+
+	:global(.gb-date) {
+		color: #777;
+	}
+
+	:global(.gb-message) {
+		color: #222;
+		margin: 0;
+		line-height: 1.5;
+		word-break: break-word;
+	}
+</style>
