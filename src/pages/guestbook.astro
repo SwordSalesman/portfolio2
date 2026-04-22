@@ -1,9 +1,45 @@
 ---
 import NavBar from "../components/NavBar.astro";
 import Layout from "../layouts/Layout.astro";
+import GuestbookForm from "../components/guestbook/GuestbookForm.astro";
+import GuestbookEntries from "../components/guestbook/GuestbookEntries.astro";
+import book from "../assets/bits/book.gif";
+import book2 from "../assets/bits/book2.gif";
+
+import Image from "astro/components/Image.astro";
 ---
 
 <Layout title='Guestbook'>
 	<NavBar title='guestbook' />
-	<p>Guestbook</p>
+	<div id='guestbook-content'>
+		<Image src={book} alt='Book' class='gb-book' />
+		<GuestbookForm />
+		<GuestbookEntries />
+	</div>
 </Layout>
+
+<style>
+	#guestbook-content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 16px;
+		padding: 20px 16px 80px;
+		max-width: 600px;
+		margin: 0 auto;
+		position: relative;
+
+		@media (max-width: 600px) {
+			overflow-x: hidden;
+		}
+	}
+
+	#guestbook-content h1 {
+		margin: 0;
+	}
+
+	.gb-book {
+		width: 120px;
+		height: auto;
+	}
+</style>

@@ -57,13 +57,30 @@ Each project section on `/projects` is its own distinct visual world — not a u
 - New project sections should each get a distinct treatment that fits the content, not a repeated template.
 
 ### Copy Voice
-The writing throughout should sound like a very earnest 90s webmaster:
+
+The site runs two distinct comedic voices. Neither one winks at the camera or explains the joke.
+
+**Voice 1 — The 90s Webmaster** (Contact, Waystone, Home)
+Sincere, enthusiastic, slightly embarrassing. This person genuinely believes their site is the greatest thing on the internet and wants you to know it.
 - "Welcome to my corner of the internet!"
 - "This site is best viewed at 800x600 resolution"
 - "Sign my guestbook!!!"
 - Lists written like: "I like: coding, art, LARP, making cool things"
-- Excessive exclamation marks in section headers are fine
+- Excessive exclamation marks in headers are fine
 - "Under construction" somewhere that never gets finished
+- Funny because of earnestness, not irony
+
+**Voice 2 — The Institution** (Career/FaxSheet, formal document contexts)
+Affectless, bureaucratic, inadvertently monstrous. The system is functioning normally. Nothing is wrong. The document does not notice anything unusual.
+- Jokes land through specificity and cold formality, not escalation: "See UN Human Rights Declaration 2004, Article 7(b)." is funnier than "I was fired unfairly"
+- Alarming content delivered in identical format to mundane content: "[ ] Witnessed horrors beyond comprehension" sits next to "[ ] Tax forms submitted" — same font, same checkbox, no comment
+- The system evaluates humans like assets without irony: "PROFITABILITY: AT OR ABOVE EXPECTATIONS"
+- Never explain or escalate the joke. State it once, in the correct bureaucratic format, and move on
+
+**Rules that apply to both voices:**
+- No performed wackiness — jokes are found, not announced
+- Specificity is funnier than vagueness ("Article 7(b)" not "some rule")
+- The joke is in the normalisation, not the reveal — the humour comes from nothing treating anything as unusual
 
 ### Decorative Elements
 - Hit counter styled as a segmented digital display ("You are visitor: 0000206232") — scoreboard aesthetic, not plain text
@@ -90,9 +107,10 @@ Four pages, file-based Astro routing:
 - Additional projects as needed; each gets its own visual treatment
 
 ### `/contact` — Contact
-- Links to: Email, Resume (PDF), LinkedIn, GitHub
-- Styled as a 98.css dialog box
-- Copy in 90s voice ("Want to hire me?? Send a message!!")
+- **Header**: retro computer GIF with "Hello Luke" on screen, animated hand slowly typing, typewriter text effect beneath it
+- **Links section** (`ContactLinks.astro`): 98.css window titled "Get In Touch!!!", 2-column grid of raised-button links — Email, LinkedIn, Resume PDF, GitHub. Flanked by handshake GIFs for decoration.
+- **Business card** (`BusinessCard.astro`): floating card with Steam trading card-style parallax 3D tilt on mouse move (tracks mouse across the whole scene, not just the card). Single-sided. Content TBD — will include skills section, salary joke, location joke.
+- Copy in 90s voice throughout
 
 ### `/guestbook` — Guestbook
 - Lists existing comments from Firestore

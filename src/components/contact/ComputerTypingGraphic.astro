@@ -1,0 +1,97 @@
+---
+import Image from "astro/components/Image.astro";
+import computer from "../../assets/bits/computer.png";
+import hand from "../../assets/bits/hand3.png";
+---
+
+<div class='typing-container'>
+	<Image class='typing-computer' alt='computer' src={computer} />
+	<p class='typing-text'></p>
+	<Image class='typing-hand' alt='hand' src={hand} />
+</div>
+
+<script>
+	// Typewriter effect for the "Hello Luke" text
+	const finalText = "Hello Luke";
+	const textElement = document.querySelector(".typing-text");
+
+	var i = 0;
+	var typingSpeed = 125;
+	function typeWrite() {
+		if (!textElement) return;
+
+		if (i < finalText.length) {
+			textElement.textContent += finalText.charAt(i);
+			i++;
+			setTimeout(typeWrite, typingSpeed);
+		} else {
+			// After typing is done, wait a bit and then clear the text to loop
+			setTimeout(() => {
+				textElement.textContent = "";
+				i = 0;
+				setTimeout(typeWrite, typingSpeed);
+			}, 2000); // Wait 2 seconds before restarting
+		}
+	}
+	typeWrite();
+</script>
+
+<style>
+	.typing-container {
+		position: relative;
+		width: 200px;
+		height: 200px;
+	}
+
+	.typing-computer {
+		/* width: 200px; */
+		/* height: auto; */
+	}
+
+	.typing-text {
+		font-family: monospace;
+		position: absolute;
+		padding: 3px;
+		top: 33px;
+		left: 53px;
+		margin: 0;
+		width: 52px;
+		height: 40px;
+		rotate: -1deg;
+		transform: perspective(100px) rotateY(15deg) rotateX(0deg);
+	}
+
+	.typing-hand {
+		position: absolute;
+		bottom: 10px;
+		right: 10px;
+		height: 80px;
+		width: 80px;
+		image-rendering: pixelated;
+		animation: typing 2s infinite;
+	}
+
+	@keyframes typing {
+		0% {
+			right: 10px;
+			bottom: 10px;
+			transform: rotate(-30deg);
+		}
+		10%,
+		40%,
+		60%,
+		90% {
+			transform: rotate(-10deg);
+		}
+		50% {
+			right: 80px;
+			bottom: -5px;
+			transform: rotate(-30deg);
+		}
+		100% {
+			right: 10px;
+			bottom: 10px;
+			transform: rotate(-30deg);
+		}
+	}
+</style>

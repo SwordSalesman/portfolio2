@@ -1,0 +1,78 @@
+---
+import css2 from "../assets/badges/css2.png";
+import eyes from "../assets/badges/eyes.gif";
+import htmllearn from "../assets/badges/htmllearn.gif";
+import fourx3_fade from "../assets/badges/4x3_fade.gif";
+import eightyeightx31_your_ad from "../assets/badges/88x31-your-ad.gif";
+import eighthundredx600 from "../assets/badges/800x600.gif";
+import cssgif from "../assets/badges/css.gif";
+import cyberrealmrefer from "../assets/badges/cyberrealmrefer.gif";
+import drmario from "../assets/badges/drmario.gif";
+import finger_logo_me_girl1 from "../assets/badges/finger-logo-me-girl1.gif";
+import get_a_computer from "../assets/badges/get_a_computer.jpg";
+import imac from "../assets/badges/imac.gif";
+
+// Real badges — add more imports here as you collect them
+const realBadges = [
+	{ src: css2.src, alt: "CSS 2" },
+	{ src: eyes.src, alt: "Eyes" },
+	{ src: htmllearn.src, alt: "Learn HTML" },
+	{ src: fourx3_fade.src, alt: "4x3 Fade" },
+	{ src: eightyeightx31_your_ad.src, alt: "88x31 Your Ad Here" },
+	{ src: eighthundredx600.src, alt: "800x600" },
+	{ src: cssgif.src, alt: "CSS" },
+	{ src: cyberrealmrefer.src, alt: "Cyber Realm Refer" },
+	{ src: drmario.src, alt: "Dr. Mario" },
+	{ src: finger_logo_me_girl1.src, alt: "Finger Logo Me Girl" },
+	{ src: get_a_computer.src, alt: "Get a Computer" },
+	{ src: imac.src, alt: "iMac" },
+];
+
+// Repeat the real badges to fill the banner until more are collected.
+// Remove this and replace `badges` with `realBadges` once you have enough.
+const REPEAT = 1;
+const badges = Array.from({ length: REPEAT }, () => realBadges).flat();
+---
+
+<div class='badge-banner'>
+	<div class='badge-track'>
+		<!-- Rendered twice so the CSS scroll animation loops seamlessly -->
+		{
+			badges.map((b) => (
+				<img
+					src={b.src}
+					alt={b.alt}
+					class='badge'
+					width='88'
+					height='31'
+				/>
+			))
+		}
+	</div>
+</div>
+
+<style>
+	.badge-banner {
+		width: 100%;
+		overflow: hidden;
+		padding: 0px 0;
+		/* border-top: 1px solid #222244; */
+		/* border-bottom: 1px solid #222244; */
+	}
+
+	.badge-track {
+		display: flex;
+		gap: 2px;
+		flex-wrap: wrap;
+	}
+
+	.badge-track:hover {
+		animation-play-state: paused;
+	}
+
+	.badge {
+		image-rendering: pixelated;
+		display: block;
+		flex-shrink: 0;
+	}
+</style>

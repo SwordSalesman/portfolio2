@@ -1,5 +1,9 @@
 Should keep this portfolio light and fun.
 
+TO DO
+
+- Fix comic sans not loading on iphone issue
+
 Features:
 
 - Leave a comment / guestbook
@@ -21,6 +25,7 @@ Ideas:
 - Fun Things
     - 'Magic card of the day' use some seeded scryfall api to get a magic card
     - 'Marius Piccolini Shrine' linked in the careers sections. whole new styled page and everything
+    - 'Pack Crack', animated parallax magic cards where you can crack packs. You have to flick through the cards. Tallies your money spent and money got from selling your cards. Swipe left to sell, right to keep.
 - Interactions
     - Flying saucer flies by, click and it explodes
     - Swing sword to cut ropes

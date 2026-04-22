@@ -9,6 +9,8 @@ import portrait2 from "../../assets/portraits/portrait-2.jpg";
 import portrait3 from "../../assets/portraits/portrait-3.jpg";
 import portrait4 from "../../assets/portraits/portrait-4.jpg";
 import magnifyingGlass from "../../assets/bits/magnifying-glass.png";
+import restored from "../../assets/bits/restored.png";
+import tape from "../../assets/bits/tape.png";
 import corkTexture from "../../assets/textures/cork.jpg";
 import StickyNote from "./StickyNote.astro";
 import type { ImageMetadata } from "astro";
@@ -36,10 +38,16 @@ const portraitData = [
 		</TornPaperNote>
 	</div>
 
-	<div class='draggable' id='sticky-2'>
-		<StickyNote>
-			<p>Reminder: get milk</p>
-		</StickyNote>
+	<div class='draggable' id='restored-note'>
+		<div class='restoration'>
+			<Image src={tape} alt='Tape' width={85} id='tape' />
+			<Image
+				src={restored}
+				alt='Restored portrait'
+				width={160}
+				id='jesus-portrait'
+			/>
+		</div>
 	</div>
 
 	{
@@ -219,10 +227,16 @@ const portraitData = [
 		rotate: 8deg;
 	}
 
-	#sticky-2 {
-		left: 360px;
+	#restored-note {
+		left: 395px;
 		top: 100px;
 		rotate: 2deg;
+
+		@media (max-width: 600px) {
+			scale: 0.8;
+			left: 270px;
+			top: 180px;
+		}
 	}
 
 	#portrait-pin-1 {
@@ -283,6 +297,22 @@ const portraitData = [
 	}
 
 	.magnifying-glass img {
+		display: block;
+	}
+
+	.restoration {
+		position: relative;
+		pointer-events: none;
+	}
+
+	.restoration #tape {
+		position: absolute;
+		top: -8px;
+		left: 35px;
+		opacity: 0.8;
+	}
+
+	.restoration #jesus-portrait {
 		display: block;
 	}
 </style>

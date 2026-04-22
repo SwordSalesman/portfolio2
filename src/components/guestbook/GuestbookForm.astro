@@ -1,0 +1,204 @@
+---
+import Image from "astro/components/Image.astro";
+import bird from "../../assets/bits/bird.gif";
+---
+
+<div class='gb-form-container'>
+	<Image src={bird} alt='Bird' class='gb-bird' />
+	<div class='window'>
+		<div class='title-bar'>
+			<div class='title-bar-text'>Sign the Guestbook</div>
+		</div>
+		<div class='window-body form-body'>
+			<form id='guestbook-form'>
+				<!-- Honeypot -->
+				<input
+					type='text'
+					name='website'
+					tabindex='-1'
+					autocomplete='off'
+					aria-hidden='true'
+					class='honeypot'
+				/>
+
+				<div class='field-row-stacked'>
+					<label for='gb-name'>Name</label>
+					<input
+						type='text'
+						id='gb-name'
+						name='name'
+						maxlength='64'
+						required
+					/>
+				</div>
+
+				<div class='field-row-stacked'>
+					<label for='gb-message'>Message</label>
+					<textarea
+						id='gb-message'
+						name='message'
+						rows='4'
+						maxlength='500'
+						required></textarea>
+				</div>
+
+				<div class='form-footer'>
+					<span id='gb-status' class='gb-status'></span>
+					<button type='submit'>Submit</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<script>
+	import { db } from "../../utils/firebase";
+	import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+	import { animate } from "animejs";
+
+	const form = document.getElementById("guestbook-form") as HTMLFormElement;
+	const status = document.getElementById("gb-status") as HTMLElement;
+
+	function pigeonFly() {
+		const birdEl = document.querySelector(".gb-bird") as HTMLElement;
+
+		animate(birdEl, {
+			translateY: [
+				{ to: 0, duration: 0 },
+				{ to: -120, easing: "outExpo", duration: 2500 },
+			],
+			translateX: [
+				{ to: 0, duration: 0 },
+				{ to: 120, easing: "outExpo", duration: 1500 },
+			],
+			scale: [
+				{ to: 1, duration: 0 },
+				{ to: 0, easing: "inExpo", duration: 2000, delay: 500 },
+			],
+			opacity: [
+				{ to: 0, duration: 0 },
+				{ to: 1, duration: 250 },
+				{ to: 0, duration: 1500, delay: 1000 },
+			],
+			display: [
+				{ to: "block", duration: 0 },
+				{ to: "none", delay: 3000 },
+			],
+		});
+	}
+
+	form.addEventListener("submit", async (e) => {
+		e.preventDefault();
+
+		const data = new FormData(form);
+		if (data.get("website")) return; // honeypot triggered
+
+		const name = (data.get("name") as string).trim();
+		const message = (data.get("message") as string).trim();
+		if (!name || !message) return;
+
+		pigeonFly();
+		return;
+
+		const submitBtn = form.querySelector(
+			"button[type=submit]",
+		) as HTMLButtonElement;
+		submitBtn.disabled = true;
+		status.textContent = "Submitting...";
+
+		try {
+			const docRef = await addDoc(collection(db, "guestbook"), {
+				name,
+				message,
+				timestamp: serverTimestamp(),
+			});
+
+			// Optimistically prepend to list
+			const event = new CustomEvent("guestbook:new-entry", {
+				detail: {
+					id: docRef.id,
+					name,
+					message,
+					timestamp: new Date(),
+				},
+			});
+			document.dispatchEvent(event);
+
+			form.reset();
+			status.textContent = "Posted!";
+			setTimeout(() => (status.textContent = ""), 3000);
+		} catch (err) {
+			console.error(err);
+			status.textContent = "Something went wrong. Try again.";
+		} finally {
+			submitBtn.disabled = false;
+		}
+	});
+</script>
+
+<style>
+	.gb-form-container {
+		width: 100%;
+	}
+
+	.window {
+		position: relative;
+		z-index: 1;
+	}
+
+	.gb-bird {
+		position: absolute;
+		width: 120px;
+		height: auto;
+		top: 300px;
+		right: 20px;
+		bottom: 0;
+		display: none;
+		opacity: 0;
+		z-index: 2;
+	}
+
+	.form-body {
+		padding: 12px;
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	.honeypot {
+		position: absolute;
+		left: -9999px;
+		visibility: hidden;
+	}
+
+	.field-row-stacked {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+	}
+
+	.field-row-stacked label {
+		font-size: 12px;
+	}
+
+	.field-row-stacked input,
+	.field-row-stacked textarea {
+		width: 100%;
+		box-sizing: border-box;
+		font-family: var(--font-body);
+		font-size: 13px;
+		resize: vertical;
+	}
+
+	.form-footer {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-top: 4px;
+	}
+
+	.gb-status {
+		font-size: 12px;
+		color: #444;
+	}
+</style>
