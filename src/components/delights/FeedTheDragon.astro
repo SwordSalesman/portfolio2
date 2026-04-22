@@ -1,0 +1,205 @@
+---
+import Image from "astro/components/Image.astro";
+import gnomeSound from "../../assets/sounds/gnome.mp3";
+import dragon from "../../assets/bits/dragon.gif";
+import dwarf from "../../assets/bits/dwarf.gif";
+import gore from "../../assets/bits/gore.gif";
+import crunchSound1 from "../../assets/sounds/crunch1.mp3";
+import crunchSound2 from "../../assets/sounds/crunch2.mp3";
+import grass from "../../assets/textures/grass.jpg";
+---
+
+<div
+	class='feed-the-dragon-container'
+	data-gore-img={gore.src}
+	data-gnome-sound={gnomeSound}
+	data-crunch-sound1={crunchSound1}
+	data-crunch-sound2={crunchSound2}
+>
+	<p>FEED THE DRAGON</p>
+	<div
+		class='dwarf-draggable dwarf'
+		data-dwarf-src={dwarf.src}
+		style=`background-image: url(${dwarf.src})`
+	>
+	</div>
+	<Image src={dragon} alt='Dragon GIF' class='dragon' />
+</div>
+
+<script>
+	import { createDraggable, animate, createTimeline } from "animejs";
+
+	const container = document.querySelector(
+		".feed-the-dragon-container",
+	) as HTMLElement;
+	const dwarf = document.querySelector(".dwarf-draggable") as HTMLElement;
+	const dragon = container.querySelector(".dragon") as HTMLElement;
+
+	console.log(container.dataset);
+
+	const gnomeSound = new Audio(container.dataset.gnomeSound);
+	gnomeSound.volume = 0.6;
+	const crunchSound1 = new Audio(container.dataset.crunchSound1);
+	crunchSound1.volume = 0.6;
+	const crunchSound2 = new Audio(container.dataset.crunchSound2);
+	crunchSound2.volume = 0.6;
+	const crunchSounds = [crunchSound1, crunchSound2];
+
+	const dwarfSrc = dwarf.dataset.dwarfSrc!;
+	const goreSrc = container.dataset.goreImg!;
+
+	function isOverlapping(a: HTMLElement, b: HTMLElement): boolean {
+		const r1 = a.getBoundingClientRect();
+		const r2 = b.getBoundingClientRect();
+		return !(
+			r1.right < r2.left ||
+			r1.left > r2.right ||
+			r1.bottom < r2.top ||
+			r1.top > r2.bottom
+		);
+	}
+
+	let consumed = false;
+	let rafId: number | null = null;
+
+	function startOverlapCheck() {
+		function check() {
+			if (consumed) return;
+			if (isOverlapping(dwarf, dragon)) {
+				consumed = true;
+				stopOverlapCheck();
+				triggerGore();
+				return;
+			}
+			rafId = requestAnimationFrame(check);
+		}
+		rafId = requestAnimationFrame(check);
+	}
+
+	function stopOverlapCheck() {
+		if (rafId !== null) {
+			cancelAnimationFrame(rafId);
+			rafId = null;
+		}
+	}
+
+	const dwarfDraggable = createDraggable(dwarf, {
+		container: container,
+		onGrab: () => {
+			gnomeSound.play();
+			startOverlapCheck();
+		},
+		onSettle: () => {
+			stopOverlapCheck();
+		},
+	});
+
+	function triggerGore() {
+		dwarf.style.backgroundImage = `url(${goreSrc})`;
+
+		createTimeline()
+			.add(dragon, {
+				scale: [1.2, 1],
+				duration: 300,
+				easing: "easeOutBack",
+			})
+			.add(
+				dragon,
+				{
+					filter: ["brightness(2)", "brightness(1)"],
+					duration: 300,
+					easing: "easeInOutSine",
+				},
+				"<<",
+			);
+
+		createTimeline()
+			.call(() => {
+				dwarfDraggable.disable();
+				const sound =
+					crunchSounds[
+						Math.floor(Math.random() * crunchSounds.length)
+					];
+				sound.play();
+			})
+			// Impact punch on gore appearance
+			.add(dwarf, {
+				scale: [1.4, 1],
+				duration: 250,
+				easing: "outBack",
+			})
+			// Hold on gore for a moment, then fade out
+			.add(dwarf, {
+				opacity: [1, 0],
+				duration: 250,
+				delay: 500,
+				easing: "inQuad",
+			})
+			// Reset position and sprite off-screen left, then walk in
+			.call(() => {
+				dwarfDraggable.reset();
+				dwarf.style.backgroundImage = `url(${dwarfSrc})`;
+				dwarf.style.transform = "translate(0px, 0px)";
+			})
+			.add(dwarf, {
+				opacity: [0, 1],
+				translateX: [-60, 0],
+				duration: 400,
+				easing: "outCubic",
+			})
+			// Re-enable feeding once the new dwarf has arrived
+			.call(() => {
+				consumed = false;
+				dwarfDraggable.enable();
+			});
+	}
+</script>
+
+<style>
+	.feed-the-dragon-container {
+		background: white;
+		position: relative;
+		height: 105px;
+		overflow: hidden;
+		background-size: 200px 200px;
+		/* animation: background-scroll 5s linear infinite; */
+	}
+
+	@keyframes background-scroll {
+		from {
+			background-position: 0 0;
+		}
+		to {
+			background-position: 200px 0;
+		}
+	}
+
+	.feed-the-dragon-container p {
+		color: black;
+		position: absolute;
+		margin: 0;
+		top: 3px;
+		left: 5px;
+	}
+
+	.dragon {
+		margin: 0 auto;
+		position: absolute;
+		right: 10px;
+		pointer-events: none;
+		z-index: 1;
+		/* filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.5)); */
+	}
+
+	.dwarf {
+		z-index: 100;
+		margin: 0 auto;
+		position: absolute;
+		left: 10px;
+		background-size: contain;
+		background-repeat: no-repeat;
+		bottom: 3px;
+		height: 50px;
+		width: 45px;
+	}
+</style>
