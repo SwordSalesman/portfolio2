@@ -5,5 +5,5 @@ import { defineConfig } from "astro/config";
 export default defineConfig({
 	site: "https://swordsalesman.github.io",
 	// Needed for GitHub pages. Remove for local dev
-	// base: "/portfolio2",
+    base: "/portfolio2",
 });
