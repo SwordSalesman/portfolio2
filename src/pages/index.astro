@@ -6,8 +6,7 @@ import GuestbookPreview from "../components/guestbook/GuestbookPreview.astro";
 import BadgeBanner from "../components/BadgeBanner.astro";
 import orb from "../assets/bits/orb.gif";
 import Image from "astro/components/Image.astro";
-import dragon from "../assets/bits/dragon.gif";
-import dwarf from "../assets/bits/dwarf.gif";
+import FeedTheDragon from "../components/delights/FeedTheDragon.astro";
 ---
 
 <Layout>
@@ -26,15 +25,7 @@ import dwarf from "../assets/bits/dwarf.gif";
 						<GuestbookPreview limit={5} />
 						<a href='/guestbook'>Sign the Guestbook →</a>
 					</div>
-					<div class='feed-the-dragon-container'>
-						<p>FEED THE DRAGON</p>
-						<div
-							class='dwarf-draggable dwarf'
-							style=`background-image: url(${dwarf.src})`
-						>
-						</div>
-						<Image src={dragon} alt='Dragon GIF' class='dragon' />
-					</div>
+					<FeedTheDragon />
 				</div>
 				<div class='grid-col' id='grid-col-1'>
 					<div class='about-the-webmaster'>
@@ -63,24 +54,7 @@ import dwarf from "../assets/bits/dwarf.gif";
 	</div>
 </Layout>
 
-<script>
-	import { createDraggable, animate } from "animejs";
-
-	const feedTheDragonContainer = document.querySelector(
-		".feed-the-dragon-container",
-	) as HTMLElement;
-	const dwarf = document.querySelector(".dwarf-draggable") as HTMLElement;
-
-	createDraggable(dwarf, {
-		container: feedTheDragonContainer,
-		onGrab: () => {
-			dwarf.classList.add("dragging");
-		},
-		onRelease: () => {
-			dwarf.classList.remove("dragging");
-		},
-	});
-</script>
+<script></script>
 
 <style>
 	.container {
@@ -124,7 +98,7 @@ import dwarf from "../assets/bits/dwarf.gif";
 	.grid-col {
 		display: flex;
 		flex-direction: column;
-		gap: 12px;
+		gap: 18px;
 		/* padding: 6px; */
 	}
 
@@ -175,38 +149,5 @@ import dwarf from "../assets/bits/dwarf.gif";
 		display: block;
 		width: 100%;
 		height: auto;
-	}
-
-	.feed-the-dragon-container {
-		background: white;
-		position: relative;
-		height: 105px;
-	}
-
-	.feed-the-dragon-container p {
-		color: black;
-		position: absolute;
-		margin: 0;
-	}
-
-	.dragon {
-		margin: 0 auto;
-		position: absolute;
-		right: 10px;
-		pointer-events: none;
-		z-index: 20;
-		/* filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.5)); */
-	}
-
-	.dwarf {
-		z-index: 0;
-		margin: 0 auto;
-		position: absolute;
-		left: 10px;
-		background-size: contain;
-		background-repeat: no-repeat;
-		bottom: 10px;
-		height: 50px;
-		width: 45px;
 	}
 </style>
