@@ -42,8 +42,8 @@ import explosionSound from "../../assets/sounds/ufo-explode.mp3";
 
 		const goingRight = Math.random() > 0.5;
 		const w = 100;
-		const startX = goingRight ? -w : window.innerWidth;
-		const endX = goingRight ? window.innerWidth : -w;
+		const startX = goingRight ? -w : window.innerWidth + w;
+		const endX = goingRight ? window.innerWidth + w : -w;
 		const startY = Math.random() * window.innerHeight * 0.75;
 		const endY = Math.random() * window.innerHeight * 0.75;
 		const duration = 5000 + Math.random() * 5000;
@@ -61,7 +61,7 @@ import explosionSound from "../../assets/sounds/ufo-explode.mp3";
 			left: endX,
 			top: endY,
 			duration,
-			easing: "ease",
+			easing: "linear",
 			onComplete: scheduleNext,
 		});
 	}

@@ -4,6 +4,8 @@ interface Props {
 }
 const { count = 42 } = Astro.props;
 const padded = String(count).padStart(8, "0");
+import Image from "astro/components/Image.astro";
+import skeleton from "../assets/bits/skeleton.gif";
 ---
 
 <div class='window visitor-popup'>
@@ -22,6 +24,7 @@ const padded = String(count).padStart(8, "0");
 		</div>
 	</div>
 	<div class='window-body'>
+		<!-- <Image src={skeleton} alt='Skeleton GIF' style='margin-bottom: 12px' /> -->
 		<p>You are visitor number:</p>
 		<div class='counter'>{padded}</div>
 		<p class='thankyou'>Thanks for stopping by!!! :)</p>
@@ -59,7 +62,7 @@ const padded = String(count).padStart(8, "0");
 	}
 
 	.window-body {
-		padding: 16px;
+		padding: 8px;
 		text-align: center;
 	}
 

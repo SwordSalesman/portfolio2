@@ -19,14 +19,7 @@ const { entryLimit }: Props = Astro.props;
 </div>
 
 <script>
-	import { db } from "../../utils/firebase";
-	import {
-		collection,
-		getDocs,
-		orderBy,
-		query,
-		limit,
-	} from "firebase/firestore";
+	import { fetchGuestbookEntries } from "../../utils/guestbook";
 
 	const list = document.getElementById("gb-entries-list") as HTMLElement;
 	const entryLimit = list.dataset.entryLimit
@@ -72,24 +65,17 @@ const { entryLimit }: Props = Astro.props;
 	}
 
 	try {
-		const q = query(
-			collection(db, "guestbook"),
-			orderBy("timestamp", "desc"),
-			limit(entryLimit ?? 100),
-		);
-		const snapshot = await getDocs(q);
+		const entries = await fetchGuestbookEntries(entryLimit);
 
-		if (snapshot.empty) {
+		if (entries.length === 0) {
 			const empty = document.createElement("p");
 			empty.className = "gb-empty";
 			empty.textContent = "No entries yet. Be the first!";
 			list.append(empty);
 		} else {
 			const fragment = document.createDocumentFragment();
-			snapshot.docs.forEach((doc) => {
-				const d = doc.data();
-				const date = d.timestamp?.toDate?.() ?? new Date();
-				fragment.append(createEntryEl(doc.id, d.name, d.message, date));
+			entries.forEach(({ id, name, message, date }) => {
+				fragment.append(createEntryEl(id, name, message, date));
 			});
 			list.innerHTML = "";
 			list.append(fragment);

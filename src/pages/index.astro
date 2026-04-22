@@ -2,16 +2,17 @@
 import Layout from "../layouts/Layout.astro";
 import VisitorPopup from "../components/VisitorPopup.astro";
 import NavBar from "../components/NavBar.astro";
-import GuestbookEntries from "../components/guestbook/GuestbookEntries.astro";
+import GuestbookPreview from "../components/guestbook/GuestbookPreview.astro";
 import BadgeBanner from "../components/BadgeBanner.astro";
 import orb from "../assets/bits/orb.gif";
 import Image from "astro/components/Image.astro";
 import dragon from "../assets/bits/dragon.gif";
+import dwarf from "../assets/bits/dwarf.gif";
 ---
 
 <Layout>
-	<NavBar />
 	<div class='container'>
+		<NavBar />
 		<div class='main-content'>
 			<div class='header-container'>
 				<h1>Welcome to Luke Cannon's Website!!!</h1>
@@ -20,12 +21,20 @@ import dragon from "../assets/bits/dragon.gif";
 			<div class='content-grid'>
 				<div class='grid-col' id='grid-col-0'>
 					<VisitorPopup count={42} />
-					<div>
+					<div style='padding: 4px'>
 						<p class='gb-header'>Latest Guestbook Entries</p>
-						<GuestbookEntries entryLimit={5} />
-						<a href='/guestbook'>Sign the Guestbook!</a>
+						<GuestbookPreview limit={5} />
+						<a href='/guestbook'>Sign the Guestbook →</a>
 					</div>
-					<!-- <Image src={dragon} alt='Dragon GIF' /> -->
+					<div class='feed-the-dragon-container'>
+						<p>FEED THE DRAGON</p>
+						<div
+							class='dwarf-draggable dwarf'
+							style=`background-image: url(${dwarf.src})`
+						>
+						</div>
+						<Image src={dragon} alt='Dragon GIF' class='dragon' />
+					</div>
 				</div>
 				<div class='grid-col' id='grid-col-1'>
 					<div class='about-the-webmaster'>
@@ -54,9 +63,29 @@ import dragon from "../assets/bits/dragon.gif";
 	</div>
 </Layout>
 
+<script>
+	import { createDraggable, animate } from "animejs";
+
+	const feedTheDragonContainer = document.querySelector(
+		".feed-the-dragon-container",
+	) as HTMLElement;
+	const dwarf = document.querySelector(".dwarf-draggable") as HTMLElement;
+
+	createDraggable(dwarf, {
+		container: feedTheDragonContainer,
+		onGrab: () => {
+			dwarf.classList.add("dragging");
+		},
+		onRelease: () => {
+			dwarf.classList.remove("dragging");
+		},
+	});
+</script>
+
 <style>
 	.container {
 		margin-bottom: 40px;
+		/* background: red; */
 	}
 	.content {
 		/* padding: 24px; */
@@ -78,6 +107,11 @@ import dragon from "../assets/bits/dragon.gif";
 	}
 
 	.content-grid {
+		/* background: rgb(209, 208, 221); */
+		background: rgb(22, 51, 53);
+		padding: 4px;
+		/* color: black; */
+
 		display: grid;
 		grid-template-columns: 1fr 2fr;
 		gap: 12px;
@@ -101,8 +135,15 @@ import dragon from "../assets/bits/dragon.gif";
 
 	.gb-header {
 		margin: 0;
-		font-family: "Comic Sans MS", cursive, sans-serif;
+		font-size: 1.25rem;
+		font-family: monospace, sans-serif;
 		color: var(--color-pink);
+	}
+
+	.gb-preview-container {
+		/* border: 2px solid var(--color-pink); */
+		/* margin: 8px;
+		background: rgb(34, 33, 64); */
 	}
 
 	.header-container {
@@ -116,9 +157,10 @@ import dragon from "../assets/bits/dragon.gif";
 	}
 
 	.about-the-webmaster {
-		padding: 12px;
+		padding: 10px;
+		margin: 4px;
 		background: rgb(34, 33, 64);
-		border: 2px solid var(--color-pink);
+		/* border: 2px solid var(--color-pink); */
 	}
 	.orb-ad {
 		margin: 0 auto;
@@ -133,5 +175,38 @@ import dragon from "../assets/bits/dragon.gif";
 		display: block;
 		width: 100%;
 		height: auto;
+	}
+
+	.feed-the-dragon-container {
+		background: white;
+		position: relative;
+		height: 105px;
+	}
+
+	.feed-the-dragon-container p {
+		color: black;
+		position: absolute;
+		margin: 0;
+	}
+
+	.dragon {
+		margin: 0 auto;
+		position: absolute;
+		right: 10px;
+		pointer-events: none;
+		z-index: 20;
+		/* filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.5)); */
+	}
+
+	.dwarf {
+		z-index: 0;
+		margin: 0 auto;
+		position: absolute;
+		left: 10px;
+		background-size: contain;
+		background-repeat: no-repeat;
+		bottom: 10px;
+		height: 50px;
+		width: 45px;
 	}
 </style>
