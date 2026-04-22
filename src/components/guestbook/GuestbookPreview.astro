@@ -1,0 +1,104 @@
+---
+interface Props {
+	limit?: number;
+}
+const { limit = 3 }: Props = Astro.props;
+---
+
+<div class='gb-preview' data-limit={limit}>
+	<p class='gb-preview-loading'>Loading...</p>
+</div>
+
+<script>
+	import { fetchGuestbookEntries } from "../../utils/guestbook";
+	import type { GuestbookEntry } from "../../utils/guestbook";
+
+	const container = document.querySelector(".gb-preview") as HTMLElement;
+	const limit = container.dataset.limit
+		? parseInt(container.dataset.limit)
+		: 3;
+
+	function createPreviewEntryEl({
+		name,
+		message,
+	}: GuestbookEntry): HTMLElement {
+		const row = document.createElement("div");
+		row.className = "gb-preview-entry";
+
+		const nameEl = document.createElement("span");
+		nameEl.className = "gb-preview-name";
+		nameEl.textContent = name;
+
+		const messageEl = document.createElement("span");
+		messageEl.className = "gb-preview-message";
+		messageEl.textContent = message;
+
+		row.append(nameEl, messageEl);
+		return row;
+	}
+
+	try {
+		const entries = await fetchGuestbookEntries(limit);
+		container.innerHTML = "";
+
+		if (entries.length === 0) {
+			const empty = document.createElement("p");
+			empty.className = "gb-preview-empty";
+			empty.textContent = "No entries yet!";
+			container.append(empty);
+		} else {
+			const fragment = document.createDocumentFragment();
+			entries.forEach((entry) =>
+				fragment.append(createPreviewEntryEl(entry)),
+			);
+			container.append(fragment);
+		}
+	} catch (err) {
+		console.error(err);
+		container.innerHTML = "";
+	}
+</script>
+
+<style>
+	.gb-preview {
+		display: flex;
+		flex-direction: column;
+		background: rgb(34, 33, 64);
+		/* gap: 6px; */
+	}
+
+	.gb-preview-loading,
+	.gb-preview-empty {
+		font-size: 12px;
+		color: var(--color-text);
+		opacity: 0.5;
+		margin: 0;
+	}
+
+	:global(.gb-preview-entry) {
+		display: flex;
+		flex-direction: column;
+		gap: 1px;
+		padding: 6px;
+		border-bottom: 1px dashed var(--color-text);
+	}
+
+	:global(.gb-preview-entry:last-child) {
+		border-bottom: none;
+	}
+
+	:global(.gb-preview-name) {
+		font-size: 12px;
+		font-weight: bold;
+		color: var(--color-pink);
+	}
+
+	:global(.gb-preview-message) {
+		font-size: 12px;
+		color: var(--color-text);
+		opacity: 0.85;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+</style>
