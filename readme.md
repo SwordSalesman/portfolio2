@@ -27,6 +27,14 @@ The goal here was to make something memorable and fun, rather than super profess
 
 **Contact** — Self explainatory.
 
+## Assets
+
+- Assets have been lovingly borrowed from a few helpful sources:
+- https://88x31.nl/index5.html
+- https://www.cameronsworld.net/
+- https://gifcities.org/
+- https://win98icons.alexmeub.com/
+
 ## Interactive Easter Eggs
 
 - A UFO crosses the screen occasionally and can be shot down
