@@ -1,34 +1,34 @@
-Should keep this portfolio light and fun.
+# lukecannon.dev
 
-TO DO
+A personal portfolio site built to feel like a GeoCities page from 1998.
 
-- Fix comic sans not loading on iphone issue
+The goal here was to make something memorable and fun, rather than super professional.
 
-Features:
+## Tech
 
-- Leave a comment / guestbook
-- User visit counters
-- Projects
-- Career
-- Contact
+- **[Astro](https://astro.build)** — static site generator, compiles to plain HTML with zero JS by default
+- **[98.css](https://jdan.github.io/98.css/)** — drop-in stylesheet for Windows 98-style UI components
+- **[Anime.js v4](https://animejs.com)** — animations, sequenced timelines, and drag interactions
+- **[Firebase Firestore](https://firebase.google.com/products/firestore)** — live visitor counter and guestbook comments
+- Vanilla JS, no frontend framework
 
-Ideas:
+## Pages
 
-- Career subsections:
-    - Larp
-    - Professional
-    - Slay the spire (link to steam API to see achievements unlocked)
-- Projects
-    - Waystone
-    - Portraits
-    - Words of Whimsy?
-- Fun Things
-    - 'Magic card of the day' use some seeded scryfall api to get a magic card
-    - 'Marius Piccolini Shrine' linked in the careers sections. whole new styled page and everything
-    - 'Pack Crack', animated parallax magic cards where you can crack packs. You have to flick through the cards. Tallies your money spent and money got from selling your cards. Swipe left to sell, right to keep.
-- Interactions
-    - Flying saucer flies by, click and it explodes
-    - Swing sword to cut ropes
-    - Hold torch to light up a hallway. the flame is angled/scaled in a cool way moving with the torch.
-    - Flick up pinball with lever to increment a counter
-    - Signing the guestbook causes a closing letter animation, then requires two interactions: (1) Pour candle wax onto the letter, (2) stamp the wax with a seal
+**Home** — Welcome message, live visitor counter, a couple gags
+
+**Projects** — Each project gets its own distinct visual treatment rather than a uniform card layout:
+
+- _Waystone_ — Character creator and approval portal for Perth's Concord LARP, presented as a parody early-2000s software product page
+- _Portraits_ — Showing off some digital artwork I'm proud of, displayed as an interactive corkboard with draggable prints
+
+**Career** — Employment history presented as a fax document.
+
+**Guestbook** — Live comments from Firestore with a submission form. Sign my guestbook!!!
+
+**Contact** — Self explainatory.
+
+## Interactive Easter Eggs
+
+- A UFO crosses the screen occasionally and can be shot down
+- 'Feed the Dragon' widget on the home page featuring an unlucky conveyer belt of gnomes
+- Pet the duck in the 'Under Constructtion' section of the project page

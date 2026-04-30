@@ -5,6 +5,7 @@ import NavBar from "../components/NavBar.astro";
 import GuestbookPreview from "../components/guestbook/GuestbookPreview.astro";
 import BadgeBanner from "../components/BadgeBanner.astro";
 import orb from "../assets/bits/orb.gif";
+import laptop from "../assets/bits/laptop.gif";
 import Image from "astro/components/Image.astro";
 import FeedTheDragon from "../components/delights/FeedTheDragon.astro";
 ---
@@ -15,16 +16,12 @@ import FeedTheDragon from "../components/delights/FeedTheDragon.astro";
 		<div class='main-content'>
 			<div class='header-container'>
 				<h1>Welcome to Luke Cannon's Website!!!</h1>
-				<p class='subheading'>[Random funny thing here]</p>
+				<p class='subheading'>{"-"}</p>
 			</div>
 			<div class='content-grid'>
 				<div class='grid-col' id='grid-col-0'>
 					<VisitorPopup count={42} />
-					<div style='padding: 4px'>
-						<p class='gb-header'>Latest Guestbook Entries</p>
-						<GuestbookPreview limit={5} />
-						<a href='/guestbook'>Sign the Guestbook →</a>
-					</div>
+					<GuestbookPreview limit={5} />
 					<FeedTheDragon />
 				</div>
 				<div class='grid-col' id='grid-col-1'>
@@ -38,6 +35,11 @@ import FeedTheDragon from "../components/delights/FeedTheDragon.astro";
 						<p>Check out my <a href='/projects'>projects</a>!</p>
 						<p>Sign the <a href='/guestbook'>guestbook</a>!</p>
 						<p>Get in touch <a href='/contact'>here</a>!</p>
+						<Image
+							src={laptop}
+							alt='Laptop GIF'
+							class='laptop-gif'
+						/>
 					</div>
 					<a
 						href='https://www.youtube.com/watch?v=xOPVMhbhfDE'
@@ -54,11 +56,30 @@ import FeedTheDragon from "../components/delights/FeedTheDragon.astro";
 	</div>
 </Layout>
 
-<script></script>
+<script>
+	// Randomise the subheading
+	const subheading = document.querySelector(".subheading");
+	const subheadingOptions = [
+		"Don't feed the duck",
+		"Vibe coded with love",
+		"Graphic design is my passion",
+		"Sent from my landline",
+		"Watch out for UFOs",
+		"100% recyclable",
+		"Voted #1 Best Website about Luke Cannon",
+		"Y2K compliant",
+	];
+	if (subheading)
+		subheading.textContent =
+			subheadingOptions[
+				Math.floor(Math.random() * subheadingOptions.length)
+			];
+</script>
 
 <style>
 	.container {
-		margin-bottom: 40px;
+		margin-bottom: 60px;
+
 		/* background: red; */
 	}
 	.content {
@@ -68,6 +89,7 @@ import FeedTheDragon from "../components/delights/FeedTheDragon.astro";
 	h2 {
 		margin: 0;
 		font-family: cursive, sans-serif;
+		line-height: 1.25em;
 	}
 	.subheading {
 		/* font-size: 1.25rem; */
@@ -82,8 +104,9 @@ import FeedTheDragon from "../components/delights/FeedTheDragon.astro";
 
 	.content-grid {
 		/* background: rgb(209, 208, 221); */
-		background: rgb(22, 51, 53);
-		padding: 4px;
+		/* background: rgb(22, 51, 53); */
+		background: rgb(16, 61, 61);
+		padding: 10px;
 		/* color: black; */
 
 		display: grid;
@@ -91,7 +114,9 @@ import FeedTheDragon from "../components/delights/FeedTheDragon.astro";
 		gap: 12px;
 
 		@media (max-width: 600px) {
-			grid-template-columns: 1fr;
+			display: flex;
+			flex-direction: column-reverse;
+			gap: 30px;
 		}
 	}
 
@@ -99,25 +124,11 @@ import FeedTheDragon from "../components/delights/FeedTheDragon.astro";
 		display: flex;
 		flex-direction: column;
 		gap: 18px;
-		/* padding: 6px; */
 	}
 
 	#grid-col-1 {
 		/* background: rgb(209, 208, 221); */
 		/* background: rgb(230, 190, 233); */
-	}
-
-	.gb-header {
-		margin: 0;
-		font-size: 1.25rem;
-		font-family: monospace, sans-serif;
-		color: var(--color-pink);
-	}
-
-	.gb-preview-container {
-		/* border: 2px solid var(--color-pink); */
-		/* margin: 8px;
-		background: rgb(34, 33, 64); */
 	}
 
 	.header-container {
@@ -132,10 +143,17 @@ import FeedTheDragon from "../components/delights/FeedTheDragon.astro";
 
 	.about-the-webmaster {
 		padding: 10px;
-		margin: 4px;
 		background: rgb(34, 33, 64);
+		position: relative;
 		/* border: 2px solid var(--color-pink); */
 	}
+
+	.laptop-gif {
+		position: absolute;
+		bottom: 6px;
+		right: 6px;
+	}
+
 	.orb-ad {
 		margin: 0 auto;
 		height: auto;

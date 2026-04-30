@@ -5,8 +5,12 @@ interface Props {
 const { limit = 3 }: Props = Astro.props;
 ---
 
-<div class='gb-preview' data-limit={limit}>
-	<p class='gb-preview-loading'>Loading...</p>
+<div class='gb-preview-container'>
+	<p class='gb-header'>Latest Guestbook Entries</p>
+	<div class='gb-preview' data-limit={limit}>
+		<p class='gb-preview-loading'>Loading...</p>
+	</div>
+	<a href='/guestbook'>Sign the Guestbook →</a>
 </div>
 
 <script>
@@ -60,6 +64,19 @@ const { limit = 3 }: Props = Astro.props;
 </script>
 
 <style>
+	.gb-header {
+		margin: 0;
+		font-size: 1.25rem;
+		font-family: monospace, sans-serif;
+		color: var(--color-pink);
+	}
+
+	.gb-preview-container {
+		/* border: 2px solid var(--color-pink); */
+		/* margin: 8px;
+		background: rgb(34, 33, 64); */
+	}
+
 	.gb-preview {
 		display: flex;
 		flex-direction: column;

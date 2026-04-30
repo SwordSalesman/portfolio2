@@ -6,7 +6,7 @@ import dwarf from "../../assets/bits/dwarf.gif";
 import gore from "../../assets/bits/gore.gif";
 import crunchSound1 from "../../assets/sounds/crunch1.mp3";
 import crunchSound2 from "../../assets/sounds/crunch2.mp3";
-import grass from "../../assets/textures/grass.jpg";
+// import grass from "../../assets/textures/grass.jpg";
 ---
 
 <div
@@ -16,7 +16,13 @@ import grass from "../../assets/textures/grass.jpg";
 	data-crunch-sound1={crunchSound1}
 	data-crunch-sound2={crunchSound2}
 >
-	<p>FEED THE DRAGON</p>
+	<div class='feed-the-dragon-text'>
+		<p>FEED THE DRAGON</p>
+		<p class='feed-the-dragon-status-container'>
+			The dragon is{" "}
+			<i class='dragon-hunger-status'></i>
+		</p>
+	</div>
 	<div
 		class='dwarf-draggable dwarf'
 		data-dwarf-src={dwarf.src}
@@ -34,8 +40,20 @@ import grass from "../../assets/textures/grass.jpg";
 	) as HTMLElement;
 	const dwarf = document.querySelector(".dwarf-draggable") as HTMLElement;
 	const dragon = container.querySelector(".dragon") as HTMLElement;
+	const textElement = container.querySelector(
+		".dragon-hunger-status",
+	) as HTMLElement;
 
-	console.log(container.dataset);
+	const DRAGON_HUNGER_KEY = "dragonHunger";
+	const hungerStates = [
+		"Fat and Jolly",
+		"Stuffed Full",
+		"Satisfied... for now",
+		"Slightly Peckish",
+		"Growling with Hunger",
+		"Ravenous",
+		"Starved to the Bone",
+	];
 
 	const gnomeSound = new Audio(container.dataset.gnomeSound);
 	gnomeSound.volume = 0.6;
@@ -48,6 +66,49 @@ import grass from "../../assets/textures/grass.jpg";
 	const dwarfSrc = dwarf.dataset.dwarfSrc!;
 	const goreSrc = container.dataset.goreImg!;
 
+	function getHunger() {
+		const hunger = parseInt(localStorage.getItem(DRAGON_HUNGER_KEY) || "0");
+		return hunger;
+	}
+
+	let hungerTimeout: ReturnType<typeof setTimeout> | null = null;
+
+	function setHunger(value: number) {
+		const clampedValue = Math.max(
+			0,
+			Math.min(value, hungerStates.length - 1),
+		);
+		localStorage.setItem(DRAGON_HUNGER_KEY, clampedValue.toString());
+
+		const status = getHungerStatus();
+		if (textElement) {
+			textElement.textContent = status;
+		}
+
+		// Clear and restart hunger timeout
+		if (hungerTimeout) {
+			clearTimeout(hungerTimeout);
+		}
+		hungerTimeout = setTimeout(() => {
+			modifyHunger(1);
+		}, 4000); // 5 seconds, adjust as needed
+	}
+
+	function modifyHunger(amount: number) {
+		const currentHunger = getHunger();
+		setHunger(currentHunger + amount);
+	}
+
+	function getHungerStatus() {
+		const hunger = getHunger();
+
+		const index = Math.max(
+			Math.min(Math.floor(hunger), hungerStates.length - 1),
+			0,
+		);
+		return hungerStates[index];
+	}
+
 	function isOverlapping(a: HTMLElement, b: HTMLElement): boolean {
 		const r1 = a.getBoundingClientRect();
 		const r2 = b.getBoundingClientRect();
@@ -59,16 +120,15 @@ import grass from "../../assets/textures/grass.jpg";
 		);
 	}
 
-	let consumed = false;
+	let consuming = false;
 	let rafId: number | null = null;
 
 	function startOverlapCheck() {
 		function check() {
-			if (consumed) return;
+			if (consuming) return;
 			if (isOverlapping(dwarf, dragon)) {
-				consumed = true;
 				stopOverlapCheck();
-				triggerGore();
+				eatTheDwarf();
 				return;
 			}
 			rafId = requestAnimationFrame(check);
@@ -94,9 +154,10 @@ import grass from "../../assets/textures/grass.jpg";
 		},
 	});
 
-	function triggerGore() {
-		dwarf.style.backgroundImage = `url(${goreSrc})`;
+	function eatTheDwarf() {
+		consuming = true;
 
+		// Dragon munch animation
 		createTimeline()
 			.add(dragon, {
 				scale: [1.2, 1],
@@ -113,14 +174,17 @@ import grass from "../../assets/textures/grass.jpg";
 				"<<",
 			);
 
+		// Dwarf crunch + gore animation + respawn sequence
 		createTimeline()
 			.call(() => {
 				dwarfDraggable.disable();
+				dwarf.style.backgroundImage = `url(${goreSrc})`;
 				const sound =
 					crunchSounds[
 						Math.floor(Math.random() * crunchSounds.length)
 					];
 				sound.play();
+				modifyHunger(-1);
 			})
 			// Impact punch on gore appearance
 			.add(dwarf, {
@@ -149,10 +213,12 @@ import grass from "../../assets/textures/grass.jpg";
 			})
 			// Re-enable feeding once the new dwarf has arrived
 			.call(() => {
-				consumed = false;
+				consuming = false;
 				dwarfDraggable.enable();
 			});
 	}
+
+	modifyHunger(0);
 </script>
 
 <style>
@@ -162,24 +228,42 @@ import grass from "../../assets/textures/grass.jpg";
 		height: 105px;
 		overflow: hidden;
 		background-size: 200px 200px;
+		width: 100%;
 		/* animation: background-scroll 5s linear infinite; */
 	}
 
-	@keyframes background-scroll {
+	/* Just a white background for now */
+	/* @keyframes background-scroll {
 		from {
 			background-position: 0 0;
 		}
 		to {
 			background-position: 200px 0;
 		}
-	}
+	} */
 
-	.feed-the-dragon-container p {
+	.feed-the-dragon-text {
 		color: black;
 		position: absolute;
 		margin: 0;
 		top: 3px;
 		left: 5px;
+		pointer-events: none;
+		user-select: none;
+	}
+
+	.feed-the-dragon-status-container {
+		font-size: 0.75rem;
+	}
+
+	.feed-the-dragon-text p {
+		margin: 0;
+	}
+
+	.dragon-hunger-status {
+		font-weight: bold;
+		color: rgb(130, 10, 173);
+		font-size: 0.75rem;
 	}
 
 	.dragon {

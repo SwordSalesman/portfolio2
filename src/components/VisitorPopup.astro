@@ -1,9 +1,4 @@
 ---
-interface Props {
-	count?: number;
-}
-const { count = 42 } = Astro.props;
-const padded = String(count).padStart(8, "0");
 import Image from "astro/components/Image.astro";
 import skeleton from "../assets/bits/skeleton.gif";
 ---
@@ -26,7 +21,7 @@ import skeleton from "../assets/bits/skeleton.gif";
 	<div class='window-body'>
 		<!-- <Image src={skeleton} alt='Skeleton GIF' style='margin-bottom: 12px' /> -->
 		<p>You are visitor number:</p>
-		<div class='counter'>{padded}</div>
+		<div class='counter'>00000042</div>
 		<p class='thankyou'>Thanks for stopping by!!! :)</p>
 		<section class='field-row' style='justify-content: flex-end'>
 			<button
@@ -42,11 +37,57 @@ import skeleton from "../assets/bits/skeleton.gif";
 </div>
 
 <script>
-	// import { createDraggable } from "animejs";
-	// createDraggable(".visitor-popup", {
-	// 	trigger: ".title-bar",
-	// 	velocityMultiplier: 0,
-	// });
+	import { doc, getDoc, setDoc } from "firebase/firestore";
+	import { db } from "../utils/firebase";
+
+	const counter = document.querySelector(".visitor-popup .counter");
+	const LAST_VISIT_KEY = "visitorPopupLastVisit";
+	const lastVisit = localStorage.getItem(LAST_VISIT_KEY) || "0";
+	const lastVisitMs = parseInt(lastVisit);
+	const now = Date.now();
+	const ONE_HOUR_MS = 1 * 60 * 60 * 1000;
+
+	/*
+	Visitor count logic:
+	- Fetch the current count from Firestore and display it.
+	- If the user hasn't visited in the last hour, update their last visit time in localStorage, then incremenet the firestore count
+	*/
+
+	async function updateUserCount() {
+		try {
+			// Fetch user count from firestore
+			const docRef = doc(db, "public", "userCount");
+			const docSnap = await getDoc(docRef);
+			var count = 0;
+			if (docSnap.exists()) {
+				count = docSnap.data()?.count || 42;
+			}
+
+			// Check if we should update the count based on last visit time
+			var shouldIncrement = false;
+			if (now - lastVisitMs > ONE_HOUR_MS) {
+				shouldIncrement = true;
+			}
+
+			// Update the displayed count, incrementing if needed
+			const currentCount = shouldIncrement ? count + 1 : count;
+			const padded = String(currentCount).padStart(8, "0");
+			if (counter) counter.textContent = padded;
+
+			// Send increment to firestore if needed
+			if (shouldIncrement) {
+				localStorage.setItem(LAST_VISIT_KEY, now.toString());
+				await setDoc(doc(db, "public", "userCount"), {
+					count: currentCount,
+				});
+			}
+		} catch (error) {
+			console.error("Error with user count:", error);
+			if (counter) counter.textContent = "00xERROR";
+		}
+	}
+
+	updateUserCount();
 </script>
 
 <style>
@@ -57,7 +98,6 @@ import skeleton from "../assets/bits/skeleton.gif";
 	}
 
 	.visitor-popup {
-		/* width: 280px; */
 		color: black;
 	}
 
@@ -69,6 +109,7 @@ import skeleton from "../assets/bits/skeleton.gif";
 	.window-body p {
 		margin: 0 0 10px;
 		cursor: default !important;
+		font-size: 1rem;
 	}
 
 	.window-body.hidden {
@@ -81,8 +122,8 @@ import skeleton from "../assets/bits/skeleton.gif";
 		font-weight: bold;
 		background: black;
 		color: #00ff41;
-		letter-spacing: 4px;
-		padding: 6px 12px;
+		letter-spacing: 3px;
+		padding: 4px 10px;
 		display: inline-block;
 		border: inset 2px;
 		margin-bottom: 12px;
