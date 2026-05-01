@@ -14,9 +14,9 @@ The goal here was to make something memorable and fun, rather than super profess
 
 ## Pages
 
-**Home** — Welcome message, live visitor counter, a couple gags
+**Home** — Welcome message, live visitor counter, guestbook preview, a couple gags
 
-**Projects** — Each project gets its own distinct visual treatment rather than a uniform card layout:
+**Projects** — A distinct section for each, plus an 'under construction' section
 
 - _Waystone_ — Character creator and approval portal for Perth's Concord LARP, presented as a parody early-2000s software product page
 - _Portraits_ — Showing off some digital artwork I'm proud of, displayed as an interactive corkboard with draggable prints
@@ -25,7 +25,7 @@ The goal here was to make something memorable and fun, rather than super profess
 
 **Guestbook** — Live comments from Firestore with a submission form. Sign my guestbook!!!
 
-**Contact** — Self explainatory.
+**Contact** — All the links you'd expect
 
 ## Assets
 
@@ -40,3 +40,4 @@ The goal here was to make something memorable and fun, rather than super profess
 - A UFO crosses the screen occasionally and can be shot down
 - 'Feed the Dragon' widget on the home page featuring an unlucky conveyer belt of gnomes
 - Pet the duck in the 'Under Constructtion' section of the project page
+- A piece of recent art history is hidden in the portraits section
