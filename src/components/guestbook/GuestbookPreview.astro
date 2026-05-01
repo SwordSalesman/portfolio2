@@ -8,7 +8,9 @@ const { limit = 3 }: Props = Astro.props;
 <div class='gb-preview-container'>
 	<p class='gb-header'>Latest Guestbook Entries</p>
 	<div class='gb-preview' data-limit={limit}>
-		<p class='gb-preview-loading'>Loading...</p>
+		<p class='gb-preview-loading' style={`height: ${limit * 44}px`}>
+			Loading...
+		</p>
 	</div>
 	<a href='/guestbook'>Sign the Guestbook →</a>
 </div>
@@ -90,6 +92,7 @@ const { limit = 3 }: Props = Astro.props;
 		color: var(--color-text);
 		opacity: 0.5;
 		margin: 0;
+		text-align: center;
 	}
 
 	:global(.gb-preview-entry) {
