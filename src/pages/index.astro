@@ -11,168 +11,183 @@ import FeedTheDragon from "../components/delights/FeedTheDragon.astro";
 ---
 
 <Layout>
-	<div class='container'>
-		<NavBar />
-		<div class='main-content'>
-			<div class='header-container'>
-				<h1>Welcome to Luke Cannon's Website!!!</h1>
-				<p class='subheading'>{"-"}</p>
-			</div>
-			<div class='content-grid'>
-				<div class='grid-col' id='grid-col-0'>
-					<VisitorPopup count={42} />
-					<GuestbookPreview limit={5} />
-					<FeedTheDragon />
-				</div>
-				<div class='grid-col' id='grid-col-1'>
-					<div class='about-the-webmaster'>
-						<h2>About the Webmaster</h2>
-						<p>
-							Hi!!! I'm Luke. My job is computer. I hope you enjoy
-							this website, because I enjoyed making it. Why don't
-							you stay a while and look around?
-						</p>
-						<p>Check out my <a href='/projects'>projects</a>!</p>
-						<p>Sign the <a href='/guestbook'>guestbook</a>!</p>
-						<p>Get in touch <a href='/contact'>here</a>!</p>
-						<Image
-							src={laptop}
-							alt='Laptop GIF'
-							class='laptop-gif'
-						/>
-					</div>
-					<a
-						href='https://www.youtube.com/watch?v=xOPVMhbhfDE'
-						target='_blank'
-						rel='noopener noreferrer'
-						class='orb-ad'
-					>
-						<Image src={orb} alt='Enlarge your orb fake ad' />
-					</a>
-					<BadgeBanner />
-				</div>
-			</div>
-		</div>
-	</div>
+  <div class="container">
+    <NavBar />
+    <div class="main-content">
+      <div class="header-container">
+        <h1>Welcome to Luke Cannon's Website!!!</h1>
+        <p class="subheading">{"-"}</p>
+      </div>
+      <div class="content-grid">
+        <div class="grid-col" id="grid-col-0">
+          <VisitorPopup count={42} />
+          <GuestbookPreview limit={5} />
+          <FeedTheDragon />
+        </div>
+        <div class="grid-col" id="grid-col-1">
+          <div class="about-the-webmaster">
+            <h2>About the Webmaster</h2>
+            <p>
+              Hi!!! I'm Luke. My job is computer. I hope you enjoy this website,
+              because I enjoyed making it. Why don't you stay a while and look
+              around?
+            </p>
+            <p>Check out my <a href="/projects">projects</a>!</p>
+            <p>Sign the <a href="/guestbook">guestbook</a>!</p>
+            <p>Get in touch <a href="/contact">here</a>!</p>
+            <Image src={laptop} alt="Laptop GIF" class="laptop-gif" />
+          </div>
+          <a
+            href="https://www.youtube.com/watch?v=xOPVMhbhfDE"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="orb-ad"
+          >
+            <Image src={orb} alt="Enlarge your orb fake ad" />
+          </a>
+          <BadgeBanner />
+        </div>
+      </div>
+      <div class="herb-garden-link">
+        <a
+          href="https://waystone.concordlarp.com/herb-garden"
+          target="_blank"
+          rel="noopener noreferrer">🌱</a
+        >
+      </div>
+    </div>
+  </div>
 </Layout>
 
 <script>
-	// Randomise the subheading
-	const subheading = document.querySelector(".subheading");
-	const subheadingOptions = [
-		"Don't feed the duck",
-		"Vibe coded with love",
-		"Graphic design is my passion",
-		"Sent from my landline",
-		"Watch out for UFOs",
-		"100% recyclable",
-		"Voted #1 Best Website about Luke Cannon",
-		"Y2K compliant",
-		"<i>{randomQuip()}</i>",
-		"Compatible with Internet Explorer",
-		"No gnomes were harmed in the making of this site",
-	];
-	if (subheading)
-		subheading.textContent =
-			subheadingOptions[
-				Math.floor(Math.random() * subheadingOptions.length)
-			];
+  // Randomise the subheading
+  const subheading = document.querySelector(".subheading");
+  const subheadingOptions = [
+    "Don't feed the duck",
+    "Vibe coded with love",
+    "Graphic design is my passion",
+    "Sent from my landline",
+    "Watch out for UFOs",
+    "100% recyclable",
+    "Voted #1 Best Website about Luke Cannon",
+    "Y2K compliant",
+    "<i>{randomQuip()}</i>",
+    "Compatible with Internet Explorer",
+    "No gnomes were harmed in the making of this site",
+  ];
+  if (subheading)
+    subheading.textContent =
+      subheadingOptions[Math.floor(Math.random() * subheadingOptions.length)];
 </script>
 
 <style>
-	.container {
-		margin-bottom: 60px;
+  .container {
+    margin-bottom: 80px;
 
-		/* background: red; */
-	}
-	.content {
-		/* padding: 24px; */
-	}
+    /* background: red; */
+  }
+  .content {
+    /* padding: 24px; */
+  }
 
-	h2 {
-		margin: 0;
-		font-family: cursive, sans-serif;
-		line-height: 1.25em;
-	}
-	.subheading {
-		/* font-size: 1.25rem; */
-		color: var(--color-lime);
-		font-style: italic;
-	}
-	.main-content {
-		padding: 10px;
-		max-width: var(--max-width-page);
-		margin: 0 auto;
-	}
+  h2 {
+    margin: 0;
+    font-family: cursive, sans-serif;
+    line-height: 1.25em;
+  }
+  .subheading {
+    /* font-size: 1.25rem; */
+    color: var(--color-lime);
+    font-style: italic;
+  }
+  .main-content {
+    padding: 10px;
+    max-width: var(--max-width-page);
+    margin: 0 auto;
+  }
 
-	.content-grid {
-		/* background: rgb(209, 208, 221); */
-		/* background: rgb(22, 51, 53); */
-		/* background: rgb(16, 61, 61); */
+  .content-grid {
+    /* background: rgb(209, 208, 221); */
+    /* background: rgb(22, 51, 53); */
+    /* background: rgb(16, 61, 61); */
 
-		padding: 10px;
-		/* color: black; */
+    padding: 10px;
+    /* color: black; */
 
-		display: grid;
-		grid-template-columns: 1fr 2fr;
-		gap: 12px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 12px;
 
-		@media (max-width: 600px) {
-			display: flex;
-			flex-direction: column-reverse;
-			gap: 30px;
-		}
-	}
+    @media (max-width: 600px) {
+      display: flex;
+      flex-direction: column-reverse;
+      gap: 30px;
+    }
+  }
 
-	.grid-col {
-		display: flex;
-		flex-direction: column;
-		gap: 18px;
-		/* background: rgb(16, 61, 61); */
-	}
+  .grid-col {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    /* background: rgb(16, 61, 61); */
+  }
 
-	#grid-col-1 {
-		/* background: rgb(209, 208, 221); */
-		/* background: rgb(230, 190, 233); */
-	}
+  #grid-col-1 {
+    /* background: rgb(209, 208, 221); */
+    /* background: rgb(230, 190, 233); */
+  }
 
-	.header-container {
-		text-align: center;
-		margin-bottom: 24px;
-	}
+  .header-container {
+    text-align: center;
+    margin-bottom: 24px;
+  }
 
-	.header-container h1,
-	.header-container p {
-		margin: 10px 0;
-	}
+  .header-container h1,
+  .header-container p {
+    margin: 10px 0;
+  }
 
-	.about-the-webmaster {
-		padding: 10px;
-		/* background: rgb(34, 33, 64); */
-		background: rgb(18, 47, 47);
-		position: relative;
-		/* margin: 8px; */
-		/* border: 2px solid var(--color-pink); */
-	}
+  .about-the-webmaster {
+    padding: 10px;
+    background: rgb(18, 47, 47);
+    position: relative;
+  }
 
-	.laptop-gif {
-		position: absolute;
-		bottom: 6px;
-		right: 6px;
-	}
+  .laptop-gif {
+    position: absolute;
+    bottom: 6px;
+    right: 6px;
+  }
 
-	.orb-ad {
-		margin: 0 auto;
-		height: auto;
-		border: 1px solid rgb(98, 146, 145);
+  .orb-ad {
+    margin: 0 auto;
+    height: auto;
+    border: 1px solid rgb(98, 146, 145);
 
-		@media (max-width: 600px) {
-		}
-	}
+    @media (max-width: 600px) {
+    }
+  }
 
-	.orb-ad img {
-		display: block;
-		width: 100%;
-		height: auto;
-	}
+  .orb-ad img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .herb-garden-link {
+    a {
+      position: fixed;
+      bottom: 14px;
+      right: 14px;
+      width: 22px;
+      height: 22px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-decoration: none;
+      font-size: 22px;
+      line-height: 0;
+    }
+  }
 </style>

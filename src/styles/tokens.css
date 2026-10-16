@@ -1,51 +1,67 @@
 @font-face {
-	font-family: "Comic Sans MS";
-	src: url("../assets/fonts/ComicSansMS.ttf") format("truetype");
-	font-weight: normal;
-	font-style: normal;
+  font-family: "Comic Sans MS";
+  src: url("../assets/fonts/ComicSansMS.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
 }
 
 @font-face {
-	font-family: "Comic Sans MS";
-	src: url("../assets/fonts/ComicSansMSBold.ttf") format("truetype");
-	font-weight: bold;
-	font-style: normal;
+  font-family: "Comic Sans MS";
+  src: url("../assets/fonts/ComicSansMSBold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
 }
 
 :root {
-	/* Layout */
-	--max-width-page: 960px;
+  /* Layout */
+  --max-width-page: 960px;
 
-	/* Colors */
-	--color-bg: #05050f;
-	--color-text: #f0f0f0;
+  /* Colors */
+  --color-bg: #05050f;
+  --color-text: #f0f0f0;
 
-	--color-cyan: #00e5ff;
-	--color-pink: #ff69b4;
-	--color-lime: #39ff14;
+  --color-cyan: #00e5ff;
+  --color-pink: #ff69b4;
+  --color-lime: #39ff14;
 
-	/* Typography */
-	--font-body: Verdana, Geneva, sans-serif;
-	--font-size-base: 14px;
+  /* Typography */
+  --font-body: Verdana, Geneva, sans-serif;
+  --font-size-base: 14px;
 
-	h1 {
-		font-size: 3rem;
-		font-family: "Comic Sans MS", cursive, sans-serif;
-		margin: 24px;
-	}
+  h1 {
+    font-size: 3rem;
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    margin: 24px;
+  }
 
-	/* media size small */
-	@media (max-width: 600px) {
-		h1 {
-			font-size: 2.5rem;
-		}
-	}
+  /* media size small */
+  @media (max-width: 600px) {
+    h1 {
+      font-size: 2.5rem;
+    }
+  }
 
-	.window-body {
-		color: black;
-	}
+  .window-body {
+    color: black;
+  }
 
-	a {
-		color: var(--color-cyan);
-	}
+  a {
+    color: var(--color-cyan);
+  }
+}
+
+.explosion-flash {
+  animation: explosion-flash 300ms ease-out infinite;
+}
+
+@keyframes explosion-flash {
+  0%,
+  49%,
+  100% {
+    filter: brightness(100);
+  }
+  50%,
+  99% {
+    filter: brightness(1);
+  }
 }

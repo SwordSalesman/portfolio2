@@ -1,34 +1,36 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import PortraitsBoard from "../components/portraits/PortraitsBoard.astro";
-import WaystoneSection from "../components/waystone/WaystoneSection.astro";
+import PortraitsBoard from "../components/projects/portraits/PortraitsBoard.astro";
+import WaystoneSection from "../components/projects/waystone/WaystoneSection.astro";
 import NavBar from "../components/NavBar.astro";
-import UnderConstruction from "../components/UnderConstruction.astro";
+import UnderConstruction from "../components/projects/UnderConstruction.astro";
+import HerbGarden from "../components/projects/HerbGarden.astro";
 ---
 
-<Layout title='Projects'>
-	<NavBar title='projects' />
-	<div id='projects-content'>
-		<WaystoneSection />
-		<PortraitsBoard />
-		<UnderConstruction />
-	</div>
+<Layout title="Projects">
+  <NavBar title="projects" />
+  <div id="projects-content">
+    <WaystoneSection />
+    <HerbGarden />
+    <PortraitsBoard />
+    <UnderConstruction />
+  </div>
 </Layout>
 
 <style>
-	#projects-content {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 60px;
-		padding: 40px 0px 80px 0;
-		margin: 0 auto;
-		max-width: 780px;
+  #projects-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 60px;
+    padding: 40px 0px 80px 0;
+    margin: 0 auto;
+    max-width: 780px;
 
-		@media (max-width: 600px) {
-			/* max-width: 94%; */
-			overflow: hidden;
-			gap: 75px;
-		}
-	}
+    @media (max-width: 600px) {
+      /* max-width: 94%; */
+      overflow: hidden;
+      gap: 75px;
+    }
+  }
 </style>
