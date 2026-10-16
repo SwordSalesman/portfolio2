@@ -1,0 +1,260 @@
+---
+import { Image } from "astro:assets";
+import cursorClick from "../../assets/bits/cursor-click.gif";
+import star from "../../assets/bits/your-did-it-clicker.png";
+---
+
+<section class="herb-garden-section">
+  <div class="herb-garden-text">
+    <h2 id="herb-garden-title">herb-garden demo</h2>
+    <p>
+      Do you like clicking and watching numbers go up? <i>
+        Of course you do!!
+      </i>
+    </p>
+    <p id="herb-count-display">Herbs gathered: 0</p>
+  </div>
+  <button id="button-herbs-button" tabindex="0">
+    <span class="herb-icon"> 🌱 </span>
+    <Image src={cursorClick} alt="Cursor clicking" id="cursor-click" />
+  </button>
+  <div id="herb-quip-container">
+    <p id="herb-quip"></p>
+    <div id="herb-star-container">
+      <Image
+        src={star}
+        alt="gold star with 'best at clicking the button'"
+        id="herb-star-1"
+      />
+      <Image src={star} alt="" aria-hidden="true" id="herb-star-2" />
+    </div>
+  </div>
+  <p>
+    <a
+      id="herb-garden-link"
+      href="https://waystone.concordlarp.com/herb-garden"
+      target="_blank"
+      rel="noopener noreferrer">try out the real thing</a
+    >
+  </p>
+</section>
+
+<script>
+  import { animate } from "animejs";
+
+  let herbCount = 0;
+  const herbButton = document.getElementById("button-herbs-button");
+  const herbCountDisplay = document.getElementById("herb-count-display");
+  const herbQuipContainer = document.getElementById("herb-quip-container");
+  const herbQuip = document.getElementById("herb-quip");
+  const herbStar = document.getElementById("herb-star-container");
+
+  function generateFloatingEmoji(emoji: string, x: number, y: number) {
+    const emojiSprite = document.createElement("div");
+    emojiSprite.innerHTML = emoji;
+    emojiSprite.style.position = "absolute";
+    emojiSprite.style.left = `${x}px`;
+    emojiSprite.style.top = `${y}px`;
+    emojiSprite.style.zIndex = "10";
+    emojiSprite.style.fontSize = "24px";
+    emojiSprite.style.pointerEvents = "none";
+
+    document.body.appendChild(emojiSprite);
+
+    animate(emojiSprite, {
+      translateY: -25 - Math.random() * 20,
+      translateX: (Math.random() - 0.5) * 30,
+      scale: [0.8, 1.1, 0.9],
+      opacity: [1, 1, 0],
+      ease: "out(3)",
+      duration: 700,
+      onComplete: () => {
+        document.body.removeChild(emojiSprite);
+      },
+    });
+  }
+
+  function updateQuip() {
+    if (!herbQuipContainer || !herbQuip || !herbStar) return;
+    const quips = [
+      undefined,
+      "You're a natural!",
+      "Now you're getting it!",
+      "You're really gonna love the game",
+      "Herbtacular!",
+      "Herbaggedon!",
+      "Okay now click the link!",
+      "This is getting ridiculous",
+      "There's only so many of these btw",
+      "Alright that's enough",
+      "Seriously STOP CLICKING",
+      "This is MADNESS",
+      "I can't believe this",
+      "I guess I'm happy you're entertained",
+      "Ah what the heck, go wild",
+    ];
+
+    const quipIndex = Math.floor(herbCount / 10);
+
+    // Spawn the star
+    if (quipIndex >= quips.length) {
+      herbQuip.style.display = "none";
+      herbStar.style.display = "block";
+      return;
+    }
+
+    const newQuip = quips[quipIndex];
+
+    if (herbQuip.innerHTML === "" && newQuip) {
+      herbQuipContainer.style.display = "block";
+    }
+    if (newQuip) {
+      herbQuip.textContent = newQuip;
+    }
+  }
+
+  function gatherHerb(event: MouseEvent) {
+    if (!herbCountDisplay || !herbButton) return;
+    herbCount++;
+    updateQuip();
+
+    const herbButtonRect = herbButton.getBoundingClientRect();
+    const boxX =
+      herbButtonRect.left +
+      window.scrollX +
+      herbButtonRect.width * Math.random();
+    const boxY =
+      herbButtonRect.top +
+      window.scrollY +
+      herbButtonRect.height * Math.random();
+
+    const x = event.pageX > window.scrollX ? event.pageX : boxX;
+    const y = event.pageY > window.scrollY ? event.pageY : boxY;
+
+    // Increment the counter display
+    herbCountDisplay.textContent = `Herbs gathered: ${herbCount}`;
+
+    // Add a new self-terminating herb sprite to the document
+    // the -10 and -14 offsets the emoji so it spawns nicely
+    generateFloatingEmoji("🌱", x - 10, y - 14);
+  }
+
+  herbButton?.addEventListener("click", (event) => {
+    gatherHerb(event);
+  });
+</script>
+
+<style>
+  .herb-garden-section {
+    width: 100%;
+    background: linear-gradient(
+      90deg,
+      #14191e00 0%,
+      #14191e 30%,
+      #14191e 70%,
+      #14191e00 100%
+    );
+    border-radius: 10px;
+    text-align: center;
+    font-family: monospace;
+  }
+
+  .herb-garden-text {
+    padding: 0 32px;
+  }
+
+  #herb-garden-title {
+    font-size: 24px;
+    color: #879bc5;
+  }
+
+  #herb-quip-container {
+    position: relative;
+    font-style: italic;
+    color: #879bc5;
+  }
+
+  #button-herbs-button {
+    position: relative;
+    font-size: 24px;
+    cursor: pointer;
+    font-family: serif;
+    color: white;
+    width: 120px;
+    height: 50px;
+    margin: 32px auto;
+    background: #181e23;
+    border: 1px solid #ffffff2e;
+    outline: none;
+    border-radius: 10px;
+    box-shadow: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition-duration: 100ms;
+  }
+
+  #button-herbs-button:hover {
+    scale: 1.1;
+    background: #1d242a;
+  }
+  #button-herbs-button:active {
+    scale: 0.95;
+    background: #181e23;
+  }
+
+  .herb-icon {
+    user-select: none;
+  }
+
+  #cursor-click {
+    height: 28px;
+    width: 28px;
+    position: absolute;
+    z-index: 1;
+    bottom: -10px;
+    right: -10px;
+  }
+
+  #herb-garden-link {
+    line-height: 2;
+    color: var(--color-pink);
+  }
+
+  #herb-star-container {
+    display: none;
+    image-rendering: pixelated;
+    margin: auto;
+    position: relative;
+    width: 220px;
+    animation: star-in 0.7s ease-in-out;
+  }
+
+  @keyframes star-in {
+    0% {
+      transform: scale(0);
+      opacity: 0;
+    }
+    20% {
+      opacity: 1;
+    }
+    40% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  #herb-star-1 {
+    filter: blur(10px);
+    width: 220px;
+  }
+
+  #herb-star-2 {
+    position: absolute;
+    width: 220px;
+    top: 0;
+    left: 0;
+  }
+</style>
