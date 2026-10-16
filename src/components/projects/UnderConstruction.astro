@@ -1,0 +1,272 @@
+---
+import Image from "astro/components/Image.astro";
+import lake from "../../assets/bits/lake.webp";
+import duck from "../../assets/bits/duck.gif";
+import brick from "../../assets/textures/brick2.jpg";
+import scoop from "../../assets/bits/construction/vehicle.gif";
+import spinning from "../../assets/bits/construction/spinning.gif";
+import titleBar from "../../assets/bits/construction/bar.png";
+import quack from "../../assets/sounds/quickquack.mp3";
+import explosionImg from "../../assets/bits/explode.gif";
+import explosionSound from "../../assets/sounds/ufo-explode.mp3";
+import cautionBar from "../../assets/bits/construction/caution-bar.png";
+import dontFeedSign from "../../assets/bits/feed-the-birds.png";
+---
+
+<section class="more-to-come">
+  <Image src={titleBar} alt="Under Construction" class="under-construction" />
+  <p class="construction-message">
+    New projects are coming. Check back every 2 to 3 minutes for updates.
+  </p>
+  <div class="scene-container">
+    <div class="brick-left" style=`background-image: url(${brick.src});`></div>
+    <div class="brick-right" style=`background-image: url(${brick.src});`></div>
+    <div class="caution-bar-container" style="top: 50px">
+      <div
+        class="caution-bar"
+        style=`background-image: url(${cautionBar.src});`
+      >
+      </div>
+    </div>
+    <Image src={lake} alt="Lake scene" class="lake" />
+    <div
+      class="duck-container"
+      data-quack-sound={quack}
+      data-explosion-img={explosionImg.src}
+      data-explosion-sound={explosionSound}
+    >
+      <Image src={duck} alt="Duck" class="duck" />
+      <img class="duck-explosion" src="" alt="" />
+    </div>
+    <div class="caution-bar-container" style="top: 260px">
+      <div
+        class="caution-bar"
+        style=`background-image: url(${cautionBar.src});`
+      >
+      </div>
+    </div>
+    <Image
+      src={dontFeedSign}
+      alt="Sign reading 'Don't Feed The Ducks'"
+      class="dont-feed-sign"
+    />
+    <Image src={scoop} alt="Scoop" class="scoop" />
+    <Image src={spinning} alt="Spinning" class="spinning" />
+  </div>
+</section>
+
+<script>
+  import { createTimeline } from "animejs";
+  import { playExplosion } from "../../utils/explosion";
+
+  const duckContainer = document.querySelector(
+    ".duck-container",
+  ) as HTMLElement;
+  const duck = duckContainer.querySelector(".duck") as HTMLElement;
+  const explosion = duckContainer.querySelector(
+    ".duck-explosion",
+  ) as HTMLImageElement;
+  const quackSound = new Audio(duckContainer.dataset.quackSound!);
+  quackSound.volume = 0.7;
+  const explosionSound = new Audio(duckContainer.dataset.explosionSound!);
+  explosionSound.volume = 0.4;
+  let clickCount = 0;
+  let exploding = false;
+  const explosionClickThreshold = 3;
+
+  function explodeTheDuck() {
+    exploding = true;
+    playExplosion(
+      duck,
+      explosion,
+      duckContainer.dataset.explosionImg!,
+      explosionSound,
+    ).then(() => {
+      window.setTimeout(() => {
+        createTimeline()
+          .add(duck, {
+            opacity: [0, 1],
+            duration: 1,
+          })
+          .add(duck, {
+            scaleY: [0, 1],
+            scaleX: [0, 0.15],
+            duration: 400,
+            easing: "easeOutQuad",
+          })
+          .add(duck, {
+            scaleX: [0.15, 1],
+            duration: 400,
+            easing: "easeOutQuad",
+          });
+        clickCount = 0;
+        exploding = false;
+      }, 2500);
+    });
+  }
+
+  duck.addEventListener("click", () => {
+    if (exploding) return;
+
+    clickCount += 1;
+    quackSound.currentTime = 0;
+    quackSound.play().catch(() => {});
+
+    if (clickCount >= explosionClickThreshold) explodeTheDuck();
+  });
+</script>
+
+<style>
+  .more-to-come {
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .construction-message {
+    margin: 0;
+    font-family: monospace;
+    background: rgb(39, 44, 50);
+
+    @media (max-width: 600px) {
+      padding: 0 16px;
+    }
+  }
+
+  .scene-container {
+    position: relative;
+    top: -20px;
+    height: 300px;
+  }
+
+  .under-construction {
+    width: 100%;
+    height: auto;
+  }
+
+  .scoop {
+    width: 230px;
+    height: auto;
+    position: absolute;
+    left: 15%;
+    transform: translateX(-50%);
+    top: 150px;
+
+    @media (max-width: 600px) {
+      display: none;
+    }
+  }
+
+  .dont-feed-sign {
+    position: absolute;
+    height: 90px;
+    width: auto;
+    top: 30px;
+    left: 24px;
+    image-rendering: pixelated;
+  }
+
+  .spinning {
+    width: 130px;
+    height: auto;
+    position: absolute;
+    right: 0;
+    top: 40px;
+
+    @media (max-width: 600px) {
+      display: none;
+    }
+  }
+
+  .brick-left,
+  .brick-right {
+    height: 225px;
+    width: 70px;
+    background-size: cover;
+    position: absolute;
+    left: 0px;
+    top: 55px;
+
+    @media (max-width: 600px) {
+      width: 20px;
+    }
+  }
+
+  .brick-right {
+    left: auto;
+    right: 0px;
+  }
+
+  .caution-bar-container {
+    width: 100%;
+    height: 16px;
+    position: relative;
+  }
+
+  .caution-bar {
+    height: 100%;
+    animation: scroll 3s linear infinite;
+  }
+
+  @keyframes scroll {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 140px 0;
+    }
+  }
+
+  .lake {
+    width: 360px;
+    height: 260px;
+    object-fit: cover;
+    object-position: bottom;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .duck-container {
+    width: 120px;
+    position: absolute;
+    left: 40%;
+    top: 200px;
+    animation: swim 8s infinite;
+  }
+
+  .duck {
+    display: block;
+    width: 100%;
+    height: auto;
+    cursor: pointer;
+  }
+
+  .duck-explosion {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120px;
+    height: auto;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  @keyframes swim {
+    0% {
+      transform: translateX(0px) scaleX(1);
+    }
+    45% {
+      transform: translateX(90px) scaleX(1);
+    }
+    50% {
+      transform: translateX(100px) scaleX(-1);
+    }
+    95% {
+      transform: translateX(10px) scaleX(-1);
+    }
+    100% {
+      transform: translateX(0px) scaleX(1);
+    }
+  }
+</style>
