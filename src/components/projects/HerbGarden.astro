@@ -14,7 +14,7 @@ import star from "../../assets/bits/your-did-it-clicker.png";
     </p>
     <p id="herb-count-display">Herbs gathered: 0</p>
   </div>
-  <button id="button-herbs-button" tabindex="0">
+  <button id="herbs-button" tabindex="0">
     <span class="herb-icon"> 🌱 </span>
     <Image src={cursorClick} alt="Cursor clicking" id="cursor-click" />
   </button>
@@ -43,7 +43,7 @@ import star from "../../assets/bits/your-did-it-clicker.png";
   import { animate } from "animejs";
 
   let herbCount = 0;
-  const herbButton = document.getElementById("button-herbs-button");
+  const herbButton = document.getElementById("herbs-button");
   const herbCountDisplay = document.getElementById("herb-count-display");
   const herbQuipContainer = document.getElementById("herb-quip-container");
   const herbQuip = document.getElementById("herb-quip");
@@ -174,7 +174,7 @@ import star from "../../assets/bits/your-did-it-clicker.png";
     color: #879bc5;
   }
 
-  #button-herbs-button {
+  #herbs-button {
     position: relative;
     font-size: 24px;
     cursor: pointer;
@@ -192,13 +192,14 @@ import star from "../../assets/bits/your-did-it-clicker.png";
     align-items: center;
     justify-content: center;
     transition-duration: 100ms;
+    touch-action: manipulation;
   }
 
-  #button-herbs-button:hover {
+  #herbs-button:hover {
     scale: 1.1;
     background: #1d242a;
   }
-  #button-herbs-button:active {
+  #herbs-button:active {
     scale: 0.95;
     background: #181e23;
   }
